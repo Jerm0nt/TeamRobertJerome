@@ -20,8 +20,12 @@ public class RunMeTest {
     }
 
     @RunMe
-    public int intWithParamter(int i ){
+    public int intWithParameter(int i ){
         return 0;
+    }
+
+    @RunMe
+    private void privateRunMe(){
     }
 
 
