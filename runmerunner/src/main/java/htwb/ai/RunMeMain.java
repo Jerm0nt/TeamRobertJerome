@@ -42,6 +42,7 @@ public class RunMeMain {
 
 
         } catch (ClassNotFoundException e) {
+            System.out.println("Die angegebene Klasse "+args[0]+" existiert nicht.");
             e.printStackTrace();
         }
     }
