@@ -25,6 +25,11 @@ public class RunMeTest {
     }
 
     @RunMe
+    private int intWithParameterPrivate(int i ){
+        return 0;
+    }
+
+    @RunMe
     private void privateRunMe(){
     }
 
