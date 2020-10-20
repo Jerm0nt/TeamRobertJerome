@@ -29,7 +29,6 @@ public class RunMeMain {
           if (method.getAnnotation(RunMe.class) != null) {
             withRunMe.add(method.getName());
           }
-
           if (method.getAnnotation(RunMe.class) == null) {
             noRunMe.add(method.getName());
           }
@@ -44,25 +43,40 @@ public class RunMeMain {
           invoEx.printStackTrace();
         }
       }
-    } catch (ClassNotFoundException | NoSuchMethodException e) {
-      System.out.println("Error: Could not find class " + classToCheck);
-      System.out.println("Usage: java -jar runmerunner-TeamRobertJerome.jar "+classToCheck);
-    } catch (IllegalAccessException e) {
-      System.out.println("Error: Could not acces class " + classToCheck);
-      System.out.println("Usage: java -jar runmerunner-TeamRobertJerome.jar "+classToCheck);
-    } catch (InstantiationException e) {
-      System.out.println("Error: Could not instantiate class " + classToCheck);
-      System.out.println("Usage: java -jar runmerunner-TeamRobertJerome.jar "+classToCheck);
-    } catch (InvocationTargetException e) {
-      System.out.println("Error: Could not invoce class " + classToCheck);
-      System.out.println("Usage: java -jar runmerunner-TeamRobertJerome.jar "+classToCheck);
+    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException |
+      InvocationTargetException e) {
+      exceptionPrinter(e, classToCheck);
     }
   }
 
-  public static void runMeOutput(String classToCheck) {
+  private static void exceptionPrinter(ReflectiveOperationException e, String classToCheck) {
+    String eMessage;
+    if (e.getClass() == ClassNotFoundException.class) {
+      eMessage = "Could not find class ";
+    }else if(e.getClass() == NoSuchMethodException.class) {
+      eMessage = "No such method as ";
+    }else if(e.getClass() == IllegalAccessException.class){
+      eMessage = "Could not acces class ";
+    }else if(e.getClass() == InstantiationException.class){
+      eMessage = "Could not instantiate class ";
+    }else if(e.getClass() == InvocationTargetException.class){
+      eMessage = "Could not invoce class ";
+    }else{
+      eMessage = "Something went terribly wrong with ";
+    }
+    System.out.println("------------------------------------------------------------------------");
+    System.out.println("Error: "+ eMessage + classToCheck);
+    System.out.println("Usage: java -jar runmerunner-TeamRobertJerome.jar classname");
+    System.out.println("------------------------------------------------------------------------");
+  }
+
+  private static void runMeOutput(String classToCheck) {
      try {
        if(noRunMe != null || withRunMe != null || notInvokable !=null){
+         System.out.println("------------------------------------------------------------------------");
          System.out.println("Analyzed class ‘" + classToCheck + "’:");
+         System.out.println();
+         System.out.println();
        }
        if(noRunMe  != null){
          System.out.println("Methods without @RunMe:");
@@ -70,12 +84,18 @@ public class RunMeMain {
        for (String string : noRunMe) {
          System.out.println(string);
        }
+       if(withRunMe !=null && noRunMe != null) {
+         System.out.println();
+       }
        if(withRunMe != null){
          System.out.println("Methods with @RunMe:");
        }
        for (String string : withRunMe) {
          System.out.println(string);
-       }
+         }
+      if (notInvokable != null && withRunMe != null) {
+        System.out.println();
+      }
        if(notInvokable != null){
          System.out.println("not invocable:");
        }
@@ -83,5 +103,8 @@ public class RunMeMain {
          System.out.println(string);
        }
      }catch (NullPointerException e) {}
+    if(noRunMe != null || withRunMe != null || notInvokable !=null){
+      System.out.println("------------------------------------------------------------------------");
+    }
   }
 }
