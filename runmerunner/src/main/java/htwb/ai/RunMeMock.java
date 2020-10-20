@@ -1,8 +1,8 @@
 package htwb.ai;
 
-public class RunMeTest {
+public class RunMeMock {
     @RunMe
-    public RunMeTest(){
+    public RunMeMock(){
     }
 
     @RunMe
