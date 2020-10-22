@@ -14,29 +14,61 @@ class RunMeMainTest {
     runMeMain = new RunMeMain();
   }
 
+  // runMeCheck()-Tests
   @Test
   public void checkExistingClass(){
-    String test = "RunMeMock";
-    runMeMain.runMeCheck(test);
+    String existing= "RunMeMock";
+    runMeMain.runMeCheck(existing);
   }
 
   @Test
   public void checkNonExistingClass(){
-    String test = "blub";
-    runMeMain.runMeCheck(test);
+    String nonExisting = "blub";
+    runMeMain.runMeCheck(nonExisting);
   }
 
   @Test
   public void checkJavaLangNumberClass(){
-    String test = "java.lang.Number";
-    runMeMain.runMeCheck(test);
+    String javaLangNumber = "java.lang.Number";
+    runMeMain.runMeCheck(javaLangNumber);
   }
 
   @Test
   public void checkJavaIOCloseableClass(){
-    String test = "java.io.Closeable";
-    runMeMain.runMeCheck(test);
+    String javaIoCloseable = "java.io.Closeable";
+    runMeMain.runMeCheck(javaIoCloseable);
   }
 
+  //main()-Tests
+  @Test
+  public void mainExistingClass(){
+    String existing= "RunMeMock";
+    String[] args = new String[1];
+    args[0] = existing;
+    runMeMain.main(args);
+  }
 
+  @Test
+  public void mainNonExistingClass(){
+    String nonExisting = "blub";
+    String[] args = new String[1];
+    args[0] = nonExisting;
+    runMeMain.main(args);
+  }
+
+  @Test
+  public void mainJavaLangNumberClass(){
+    String javaLangNumber = "java.lang.Number";
+    String[] args = new String[1];
+    args[0] = javaLangNumber;
+    runMeMain.main(args);
+  }
+
+  @Test
+  public void mainJavaIOCloseableClass(){
+    String javaIoCloseable = "java.io.Closeable";
+    String[] args = new String[1];
+    args[0] = javaIoCloseable;
+    runMeMain.main(args);
+  }
 }

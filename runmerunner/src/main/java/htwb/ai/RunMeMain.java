@@ -54,7 +54,7 @@ public class RunMeMain {
     if (e.getClass() == ClassNotFoundException.class) {
       eMessage = "Could not find class ";
     }else if(e.getClass() == NoSuchMethodException.class) {
-      eMessage = "No such method as ";
+      eMessage = "No such mehtod in ";
     }else if(e.getClass() == IllegalAccessException.class){
       eMessage = "Could not acces class ";
     }else if(e.getClass() == InstantiationException.class){
