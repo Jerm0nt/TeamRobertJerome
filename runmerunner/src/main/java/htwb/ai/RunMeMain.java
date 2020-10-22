@@ -11,8 +11,14 @@ public class RunMeMain {
   static ArrayList<String> notInvokable;
 
   public static void main(String[] args) {
-    runMeCheck(args[0]);
-    runMeOutput(args[0]);
+    try {
+      runMeCheck(args[0]);
+      runMeOutput(args[0]);
+    }
+    catch(ArrayIndexOutOfBoundsException e){
+      System.out.println("Error: keinen Klassenparameter übergeben");
+      System.out.println("Usage: java -jar runmerunner-TeamRobertJerome.jar classname");
+    }
   }
 
   public static void runMeCheck(String classToCheck) {

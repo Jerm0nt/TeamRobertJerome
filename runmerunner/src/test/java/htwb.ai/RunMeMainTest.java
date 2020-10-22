@@ -1,6 +1,7 @@
 package htwb.ai;
 
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,6 +70,12 @@ class RunMeMainTest {
     String javaIoCloseable = "java.io.Closeable";
     String[] args = new String[1];
     args[0] = javaIoCloseable;
+    runMeMain.main(args);
+  }
+
+  @Test
+  public void argsEmpty(){
+    String[] args = new String[0];
     runMeMain.main(args);
   }
 }
