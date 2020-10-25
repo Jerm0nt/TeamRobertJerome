@@ -28,7 +28,7 @@ jobs:
     - name: runmerunner clean, build, test & package
       run: mvn -pl runmerunner clean package
     - name: Run tests
-      run |
+      run: |
         jarpath=$(ls ./runmerunner/target/runmerunner-*.jar)
         jarname=$(basename $jarpath)
         echo $jarname
