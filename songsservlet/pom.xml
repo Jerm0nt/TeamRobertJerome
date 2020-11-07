@@ -31,22 +31,27 @@
 			<version>2.6</version>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>5.0.1.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>5.0.1.RELEASE</version>
+        <scope>test</scope>
+    </dependency>
         <!-- 
         mockServletResponse.setContentType() needs 
         org/springframework/http/MediaType 
         which is in:
         -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>5.0.1.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>5.0.1.RELEASE</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.1-901-1.jdbc4</version>
+    </dependency>
 	</dependencies>
 	<build>
 		<finalName>songsservlet-TeamRobertJerome</finalName>
