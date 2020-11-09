@@ -24,26 +24,35 @@ public class SongsServlet extends HttpServlet {
     Enumeration<String> paramNames = req.getParameterNames();
     Map<String, String[]> parameterMap = req.getParameterMap();
 
+    //hier wird geprüft, dass nur ein Parameter übergeben wird
     if(parameterMap.size()!=1){
-      responseStr ="Falsch leider! trink ein cay und versuch nochmal!";
+      responseStr ="Falsche Eingabe (Mehrere Parameter übergeben)!";
     }else {
       if (parameterMap.containsKey("songid")) {
+
         System.out.println("songID gefunden");
         String[] values = parameterMap.get("songid");
+
+        //hier wird geprueft, dass nur eine SongID übergeben wird
         if (values.length != 1) {
-          responseStr = "Falsche Eingabe, bitte nur einen song anfordern!";
+          responseStr = "Falsche Eingabe (Mehrere SongIDs übergeben)!";
         } else {
           String value = values[0];
-          responseStr = "Korrekte Ausführung Bruder!";
+          responseStr = "Korrekte Ausführung (1 SongID übergeben)!";
         }
+
       } else if (parameterMap.containsKey("all")) {
-        System.out.println("all gefunden");
+
+        System.out.println("All übergeben!");
         String[] values = parameterMap.get("all");
+
+        //hier wird geprüft, dass "all" nur einmal übergeben wird
         if (values.length != 1) {
-          responseStr = "Falsche Eingabe bei all!";
+          responseStr = "Falsche Eingabe (all mehrfach übergeben))";
         } else {
-          responseStr = "Korrekte Ausführung Bruder bei all!";
+          responseStr = "Korrekte Ausführung (all übergeben))";
         }
+
       }
       System.out.println("Anfrage reingekommen!");
     }
