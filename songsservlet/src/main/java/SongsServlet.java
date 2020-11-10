@@ -1,9 +1,17 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -13,9 +21,17 @@ public class SongsServlet extends HttpServlet {
 
   private String uriToDB = null;
 
+
+  private static final String PERSISTENCE_UNIT_NAME = "songDB-PU";
+  EntityManager em;
+
+
   @Override
   public void init(ServletConfig servletConfig) throws ServletException {
-
+// Datei persistence.xml wird automatisch eingelesen, beim Start der Applikation, einmalig
+    EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+// EntityManager bietet Zugriff auf Datenbank
+     em = factory.createEntityManager();
   }
 
   @Override
@@ -28,6 +44,7 @@ public class SongsServlet extends HttpServlet {
     if(parameterMap.size()!=1){
       responseStr ="Falsche Eingabe (Mehrere Parameter übergeben)!";
     }else {
+
       if (parameterMap.containsKey("songid")) {
 
         System.out.println("songID gefunden");
@@ -38,7 +55,12 @@ public class SongsServlet extends HttpServlet {
           responseStr = "Falsche Eingabe (Mehrere SongIDs übergeben)!";
         } else {
           String value = values[0];
-          responseStr = "Korrekte Ausführung (1 SongID übergeben)!";
+          Songs song = em.find(Songs.class,value);
+          String songJsonString = new Gson().toJson(song);
+
+
+          responseStr = songJsonString;
+
         }
 
       } else if (parameterMap.containsKey("all")) {
