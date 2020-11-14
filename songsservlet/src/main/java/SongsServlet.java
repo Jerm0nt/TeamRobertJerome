@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,14 +23,15 @@ public class SongsServlet extends HttpServlet {
   private String uriToDB = null;
 
 
-  private static final String PERSISTENCE_UNIT_NAME = "songDB-PU";
+  private static final String PERSISTENCE_UNIT_NAME = "songdb";
   EntityManager em;
 
 
   @Override
   public void init(ServletConfig servletConfig) throws ServletException {
 // Datei persistence.xml wird automatisch eingelesen, beim Start der Applikation, einmalig
-    EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+    HibernatePersistenceProvider hp;
+    EntityManagerFactory factory = Persistence. createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 // EntityManager bietet Zugriff auf Datenbank
      em = factory.createEntityManager();
   }
