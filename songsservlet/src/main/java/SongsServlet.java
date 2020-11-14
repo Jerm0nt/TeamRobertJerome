@@ -57,7 +57,8 @@ public class SongsServlet extends HttpServlet {
           responseStr = "Falsche Eingabe (Mehrere SongIDs übergeben)!";
         } else {
           String value = values[0];
-          Songs song = em.find(Songs.class,value);
+
+          Songs song = em.find(Songs.class,Integer.parseInt(value));
           String songJsonString = new Gson().toJson(song);
 
 

@@ -9,9 +9,11 @@
     <properties>
         <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
         <property name="javax.persistence.jdbc.url"
-                value= "jdbc:postgresql://ec2-54-75-199-252.eu-west-1.compute.amazonaws.com:5432/dp9r2ed19b21a"/>
+                value= "jdbc:postgresql://ec2-54-75-199-252.eu-west-1.compute.amazonaws.com:5432/dp9r2ed19b21a?ssl=true"/>
         <property name="javax.persistence.jdbc.user" value="lguzzueocrapoa"/>
         <property name="javax.persistence.jdbc.password" value="f78491f84f9232ce77bc030c7de90ec3a95acf907f10e408c8a965d262638bf8"/>
+
+
 
         <property name="hibernate.c3p0.min_size" value="1"/>
         <property name="hibernate.c3p0.max_size" value="8"/>
