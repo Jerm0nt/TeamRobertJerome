@@ -1,28 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
-    <persistence-unit name="songdb" transaction-type="RESOURCE_LOCAL">
+
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit transaction-type="RESOURCE_LOCAL" name="songdb">
 
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
     <class>Songs</class>
+
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+
     <properties>
-        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-        <property name="javax.persistence.jdbc.url"
-                value= "jdbc:postgresql://ec2-54-75-199-252.eu-west-1.compute.amazonaws.com:5432/dp9r2ed19b21a?ssl=true"/>
-        <property name="javax.persistence.jdbc.user" value="lguzzueocrapoa"/>
-        <property name="javax.persistence.jdbc.password" value="f78491f84f9232ce77bc030c7de90ec3a95acf907f10e408c8a965d262638bf8"/>
+
+    <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+
+    <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-75-199-252.eu-west-1.compute.amazonaws.com:5432/dp9r2ed19b21a"/>
+
+    <property name="javax.persistence.jdbc.user" value="lguzzueocrapoa"/>
+
+    <property name="javax.persistence.jdbc.password" value="f78491f84f9232ce77bc030c7de90ec3a95acf907f10e408c8a965d262638bf8"/>
+
+    <!--Hibernate properties-->
 
 
+    <property name="hibernate.show_sql" value="true"/>
 
-        <property name="hibernate.c3p0.min_size" value="1"/>
-        <property name="hibernate.c3p0.max_size" value="8"/>
-        <property name="hibernate.c3p0.timeout" value="1800"/>
-        <property name="hibernate.c3p0.max_statements" value="50"/>
+    <property name="hibernate.format_sql" value="false"/>
 
-        <property name="hibernate.show_sql" value="true"/>
-        <property name="hibernate.format_sql" value="false"/>
-        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-    </properties>
-    </persistence-unit>
+    <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
+
+    <!-- The connection is released after each statement executionand reacquired prior to running the next statement. -->
+
+
+    <property name="hibernate.connection.release_mode" value="after_statement"/>
+
+    <!-- Connection pool properties -->
+
+
+    <property name="hibernate.c3p0.min_size" value="1"/>
+
+    <property name="hibernate.c3p0.max_size" value="8"/>
+
+    <!-- in seconds: When an idle connection is removed from the poolHibernate default: 0, never expire. -->
+
+
+    <property name="hibernate.c3p0.timeout" value="1800"/>
+
+    <!-- Number of prepared statements that will be cached.Hibernate default: 0 , caching is disable. -->
+
+
+    <property name="hibernate.c3p0.max_statements" value="50"/>
+
+ </properties>
+
+</persistence-unit>
+
 </persistence>

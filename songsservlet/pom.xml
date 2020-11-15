@@ -47,12 +47,14 @@
         <version>5.0.1.RELEASE</version>
         <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.1-901-1.jdbc4</version>
-    </dependency>
-	</dependencies>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.18</version>
+        </dependency>
+
+    </dependencies>
 	<build>
 		<finalName>songsservlet-TeamRobertJerome</finalName>
 		<plugins>
