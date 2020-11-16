@@ -157,6 +157,8 @@ public class SongsServlet extends HttpServlet {
           e.printStackTrace();
           resp.setStatus(406);
         }
+      }else{
+        resp.setStatus(406);
       }
     }
     else{
