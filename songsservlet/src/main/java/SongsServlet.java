@@ -41,11 +41,19 @@ public class SongsServlet extends HttpServlet {
     String responseStr = "";
     Enumeration<String> paramNames = req.getParameterNames();
     Map<String, String[]> parameterMap = req.getParameterMap();
+    StringBuilder stringBuilder = new StringBuilder();
+
 
     //hier wird geprüft, dass nur ein Parameter übergeben wird
     if(parameterMap.size()!=1){
-      responseStr ="Falsche Eingabe (Mehrere Parameter übergeben)!";
+      responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
+        +"Bitte übergeben sie eine 'SongID' oder 'All'.";
     }else {
+
+      stringBuilder.append("HTTP/1.1 200 OK"+System.getProperty("line.separator")
+        +"Content-Type: application/json"+System.getProperty("line.separator")
+        +"..."+System.getProperty("line.separator")
+        +"Payload:"+System.getProperty("line.separator"));
 
       if (parameterMap.containsKey("songid")) {
 
@@ -54,16 +62,24 @@ public class SongsServlet extends HttpServlet {
 
         //hier wird geprueft, dass nur eine SongID übergeben wird
         if (values.length != 1) {
-          responseStr = "Falsche Eingabe (Mehrere SongIDs übergeben)!";
+          responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
+            +"Bitte übergeben sie genau eine 'SongID'.";
         } else {
           String value = values[0];
 
           Songs song = em.find(Songs.class,Integer.parseInt(value));
-          String songJsonString = new Gson().toJson(song);
 
 
-          responseStr = songJsonString;
+          if(song==null){
+            //falls angefragte id nicht vorhanden
+            responseStr = "HTTP/1.1 404 Not Found"+System.getProperty("line.separator")
+              +"Die übergebene 'SongID' konnte nicht gefunden werden.";
+          }else{
+            //falls angefragte id vorhanden
+            stringBuilder.append(new Gson().toJson(song));
 
+            responseStr = stringBuilder.toString();
+          }
         }
 
       } else if (parameterMap.containsKey("all")) {
@@ -73,22 +89,33 @@ public class SongsServlet extends HttpServlet {
 
         //hier wird geprüft, dass "all" nur einmal übergeben wird
         if (values.length != 1) {
-          responseStr = "Falsche Eingabe (all mehrfach übergeben))";
+          responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
+            +"Bitte übergeben sie 'All' nur einmal.";
         } else {
+          if(values[0]!=""){
+            responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
+              +"Bitte übergeben sie 'All' ohne wert.";
+          }else{
+            //hole Liste mit allen gespeicherten Songs
+            List<Songs> songs = em.createQuery("SELECT a FROM Songs a", Songs.class).getResultList();
 
-          List<Songs> songs = em.createQuery("SELECT a FROM Songs a", Songs.class).getResultList();
-          ListIterator<Songs> iterator = songs.listIterator();
+            //falls keine Songs vorhanden
+            if(songs==null){
+              responseStr = "HTTP/1.1 404 Not Found"+System.getProperty("line.separator")
+                +"Es konnten keine Songs gefunden werden.";
+            }
 
-          StringBuilder stringBuilder = new StringBuilder();
-          while (iterator.hasNext()){
-            stringBuilder.append(new Gson().toJson(iterator.next())+System.getProperty("line.separator"));
+            ListIterator<Songs> iterator = songs.listIterator();
+            while (iterator.hasNext()){
+              stringBuilder.append(new Gson().toJson(iterator.next())+System.getProperty("line.separator"));
+            }
+            responseStr = stringBuilder.toString();
           }
-          String songsJsonString = stringBuilder.toString();
-
-
-          responseStr = songsJsonString;
         }
-
+      }else{
+        //falls falscher Parameter übergeben
+        responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
+          +"Parameter nicht zulässig!";
       }
       System.out.println("Anfrage reingekommen!");
     }
