@@ -9,12 +9,9 @@ public class Songs {
 
     private String title;
 
-
     private String artist;
 
-
     private String label;
-
 
     private int released;
 
@@ -31,14 +28,12 @@ public class Songs {
         this.title=title;
     }
 
-
     public String getArtist(){
         return artist;
     }
     public void setArtist(String artist){
         this.artist=artist;
     }
-
 
     public String getLabel(){
         return label;
@@ -50,6 +45,7 @@ public class Songs {
     public int getReleased(){
         return released;
     }
+
     public void setReleased(int released){
         this.released=released;
     }

@@ -144,9 +144,9 @@ public class SongsServlet extends HttpServlet {
           em.persist(song);
           em.getTransaction().commit();
           //em.flush();
-          //int id = song.getId();
+          int id = song.getId();
           resp.setStatus(200);
-          resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid=");
+          resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
         } catch (Exception ex) { //Aus Platzgründen, besser jede Exception einzeln fangen
           em.getTransaction().rollback();
           ex.printStackTrace();
