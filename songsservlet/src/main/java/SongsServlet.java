@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
 
@@ -145,16 +146,20 @@ public class SongsServlet extends HttpServlet {
           em.getTransaction().commit();
           //em.flush();
           int id = song.getId();
-          resp.setStatus(200);
+          resp.setStatus(201);
           resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
         } catch (Exception ex) { //Aus Platzgründen, besser jede Exception einzeln fangen
           em.getTransaction().rollback();
           ex.printStackTrace();
         }
       }
+      else{
+        resp.setStatus(406);
+      }
 
     }
     else{
+      //406 not acceptable
       resp.setStatus(406);
     }
   }
@@ -163,6 +168,7 @@ public class SongsServlet extends HttpServlet {
     try {
       Gson gson = new Gson();
       gson.fromJson(jsonInString, Object.class);
+
       return true;
     } catch(com.google.gson.JsonSyntaxException ex) {
       return false;
