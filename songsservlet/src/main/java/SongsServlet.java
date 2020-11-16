@@ -138,21 +138,21 @@ public class SongsServlet extends HttpServlet {
     if(req.getHeader("Content-Type").equals("application/json")){
       String body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
       if(isJSONValid(body)){
-        Songs song = gson.fromJson(body, Songs.class);
         try{
+          Songs song = gson.fromJson(body, Songs.class);
           em.getTransaction().begin();
           em.persist(song);
           em.getTransaction().commit();
-          //em.flush();
           int id = song.getId();
-          resp.setStatus(200);
+          resp.setStatus(201);
           resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
-        } catch (Exception ex) { //Aus Platzgründen, besser jede Exception einzeln fangen
+
+        }catch(Exception e){
           em.getTransaction().rollback();
-          ex.printStackTrace();
+          e.printStackTrace();
+          resp.setStatus(406);
         }
       }
-
     }
     else{
       resp.setStatus(406);
