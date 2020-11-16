@@ -45,6 +45,7 @@ public class SongsServlet extends HttpServlet {
     StringBuilder stringBuilder = new StringBuilder();
 
 
+
     //hier wird geprüft, dass nur ein Parameter übergeben wird
     if(parameterMap.size()!=1){
       resp.setStatus(400);
@@ -64,19 +65,23 @@ public class SongsServlet extends HttpServlet {
         }
         else {
           String value = values[0];
-          Songs song = em.find(Songs.class,Integer.parseInt(value));
-          if(song==null){
-            //falls angefragte id nicht vorhanden
-            resp.setStatus(404);
-            responseStr = "HTTP/1.1 404 Not Found"+System.getProperty("line.separator")
-              +"Die übergebene 'SongID' konnte nicht gefunden werden.";
-          }else{
-            //falls angefragte id vorhanden
-            resp.setStatus(200);
-            resp.setHeader("Content-Type","application/json");
-           // resp.setHeader("X-Content-Type-Options","nosniff");
-            stringBuilder.append(new Gson().toJson(song));
-            responseStr = stringBuilder.toString();
+          try {
+            Songs song = em.find(Songs.class, Integer.parseInt(value));
+            if (song == null) {
+              //falls angefragte id nicht vorhanden
+              resp.setStatus(404);
+              responseStr = "HTTP/1.1 404 Not Found" + System.getProperty("line.separator")
+                + "Die übergebene 'SongID' konnte nicht gefunden werden.";
+            } else {
+              //falls angefragte id vorhanden
+              resp.setStatus(200);
+              resp.setHeader("Content-Type", "application/json");
+              // resp.setHeader("X-Content-Type-Options","nosniff");
+              stringBuilder.append(new Gson().toJson(song));
+              responseStr = stringBuilder.toString();
+            }
+          }catch(Exception e){
+            resp.setStatus(400);
           }
         }
 
