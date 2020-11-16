@@ -32,7 +32,7 @@ public class SongsServlet extends HttpServlet {
   public void init(ServletConfig servletConfig) throws ServletException {
 // Datei persistence.xml wird automatisch eingelesen, beim Start der Applikation, einmalig
     HibernatePersistenceProvider hp;
-    EntityManagerFactory factory = Persistence. createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+    EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 // EntityManager bietet Zugriff auf Datenbank
      em = factory.createEntityManager();
   }
@@ -140,12 +140,13 @@ public class SongsServlet extends HttpServlet {
       if(isJSONValid(body)){
         Songs song = gson.fromJson(body, Songs.class);
         try{
+          em.getTransaction().begin();
           em.persist(song);
           em.getTransaction().commit();
-          em.flush();
-          int id = song.getId();
+          //em.flush();
+          //int id = song.getId();
           resp.setStatus(200);
-          resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
+          resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid=");
         } catch (Exception ex) { //Aus Platzgründen, besser jede Exception einzeln fangen
           em.getTransaction().rollback();
           ex.printStackTrace();
