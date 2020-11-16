@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SongsServlet extends HttpServlet {
 
@@ -46,38 +47,35 @@ public class SongsServlet extends HttpServlet {
 
     //hier wird geprüft, dass nur ein Parameter übergeben wird
     if(parameterMap.size()!=1){
+      resp.setStatus(400);
       responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
         +"Bitte übergeben sie eine 'SongID' oder 'All'.";
-    }else {
-
-      stringBuilder.append("HTTP/1.1 200 OK"+System.getProperty("line.separator")
-        +"Content-Type: application/json"+System.getProperty("line.separator")
-        +"..."+System.getProperty("line.separator")
-        +"Payload:"+System.getProperty("line.separator"));
+    }
+    else {
 
       if (parameterMap.containsKey("songid")) {
 
-        System.out.println("songID gefunden");
         String[] values = parameterMap.get("songid");
-
         //hier wird geprueft, dass nur eine SongID übergeben wird
         if (values.length != 1) {
+          resp.setStatus(400);
           responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
             +"Bitte übergeben sie genau eine 'SongID'.";
-        } else {
+        }
+        else {
           String value = values[0];
-
           Songs song = em.find(Songs.class,Integer.parseInt(value));
-
-
           if(song==null){
             //falls angefragte id nicht vorhanden
+            resp.setStatus(404);
             responseStr = "HTTP/1.1 404 Not Found"+System.getProperty("line.separator")
               +"Die übergebene 'SongID' konnte nicht gefunden werden.";
           }else{
             //falls angefragte id vorhanden
+            resp.setStatus(200);
+            resp.setHeader("Content-Type","application/json");
+           // resp.setHeader("X-Content-Type-Options","nosniff");
             stringBuilder.append(new Gson().toJson(song));
-
             responseStr = stringBuilder.toString();
           }
         }
@@ -89,37 +87,45 @@ public class SongsServlet extends HttpServlet {
 
         //hier wird geprüft, dass "all" nur einmal übergeben wird
         if (values.length != 1) {
+          resp.setStatus(400);
           responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
             +"Bitte übergeben sie 'All' nur einmal.";
         } else {
           if(values[0]!=""){
+            resp.setStatus(400);
             responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
               +"Bitte übergeben sie 'All' ohne wert.";
           }else{
+
             //hole Liste mit allen gespeicherten Songs
             List<Songs> songs = em.createQuery("SELECT a FROM Songs a", Songs.class).getResultList();
 
             //falls keine Songs vorhanden
             if(songs==null){
+              resp.setStatus(404);
               responseStr = "HTTP/1.1 404 Not Found"+System.getProperty("line.separator")
                 +"Es konnten keine Songs gefunden werden.";
             }
-
-            ListIterator<Songs> iterator = songs.listIterator();
-            while (iterator.hasNext()){
-              stringBuilder.append(new Gson().toJson(iterator.next())+System.getProperty("line.separator"));
+            else {
+              resp.setStatus(200);
+              resp.setHeader("Content-Type","application/json");
+              ListIterator<Songs> iterator = songs.listIterator();
+              while (iterator.hasNext()) {
+                stringBuilder.append(new Gson().toJson(iterator.next()) + System.getProperty("line.separator"));
+              }
+              responseStr = stringBuilder.toString();
             }
-            responseStr = stringBuilder.toString();
           }
         }
       }else{
         //falls falscher Parameter übergeben
+        resp.setStatus(400);
         responseStr = "HTTP/1.1 400 Bad Request"+System.getProperty("line.separator")
           +"Parameter nicht zulässig!";
       }
       System.out.println("Anfrage reingekommen!");
     }
-    resp.setContentType("text/plain");
+    //resp.setContentType("text/plain");
     try (PrintWriter out = resp.getWriter()) {
       out.println(responseStr);
     }
@@ -128,5 +134,26 @@ public class SongsServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     super.doPost(req, resp);
+
+    if(req.getHeader("Content-Type").equals("application/json")){
+      String body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+      if(isJSONValid(body)){
+        resp.setStatus(200);
+      }
+      System.out.println(body);
+    }
+    else{
+      resp.setStatus(406);
+    }
+  }
+
+  private static boolean isJSONValid(String jsonInString) {
+    try {
+      Gson gson = new Gson();
+      gson.fromJson(jsonInString, Object.class);
+      return true;
+    } catch(com.google.gson.JsonSyntaxException ex) {
+      return false;
+    }
   }
 }
