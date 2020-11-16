@@ -1,10 +1,12 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.hibernate.mapping.Array;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,9 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Map;
+import java.util.*;
 
 public class SongsServlet extends HttpServlet {
 
@@ -75,7 +75,18 @@ public class SongsServlet extends HttpServlet {
         if (values.length != 1) {
           responseStr = "Falsche Eingabe (all mehrfach übergeben))";
         } else {
-          responseStr = "Korrekte Ausführung (all übergeben))";
+
+          List<Songs> songs = em.createQuery("SELECT a FROM Songs a", Songs.class).getResultList();
+          ListIterator<Songs> iterator = songs.listIterator();
+
+          StringBuilder stringBuilder = new StringBuilder();
+          while (iterator.hasNext()){
+            stringBuilder.append(new Gson().toJson(iterator.next())+System.getProperty("line.separator"));
+          }
+          String songsJsonString = stringBuilder.toString();
+
+
+          responseStr = songsJsonString;
         }
 
       }
