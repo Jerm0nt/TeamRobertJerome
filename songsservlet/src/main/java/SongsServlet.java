@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.mapping.Array;
 
@@ -65,19 +64,23 @@ public class SongsServlet extends HttpServlet {
         }
         else {
           String value = values[0];
-          Songs song = em.find(Songs.class,Integer.parseInt(value));
-          if(song==null){
-            //falls angefragte id nicht vorhanden
-            resp.setStatus(404);
-            responseStr = "HTTP/1.1 404 Not Found"+System.getProperty("line.separator")
-              +"Die übergebene 'SongID' konnte nicht gefunden werden.";
-          }else{
-            //falls angefragte id vorhanden
-            resp.setStatus(200);
-            resp.setHeader("Content-Type","application/json");
-           // resp.setHeader("X-Content-Type-Options","nosniff");
-            stringBuilder.append(new Gson().toJson(song));
-            responseStr = stringBuilder.toString();
+          try {
+            Songs song = em.find(Songs.class, Integer.parseInt(value));
+            if (song == null) {
+              //falls angefragte id nicht vorhanden
+              resp.setStatus(404);
+              responseStr = "HTTP/1.1 404 Not Found" + System.getProperty("line.separator")
+                + "Die übergebene 'SongID' konnte nicht gefunden werden.";
+            } else {
+              //falls angefragte id vorhanden
+              resp.setStatus(200);
+              resp.setHeader("Content-Type", "application/json");
+              // resp.setHeader("X-Content-Type-Options","nosniff");
+              stringBuilder.append(new Gson().toJson(song));
+              responseStr = stringBuilder.toString();
+            }
+          }catch(Exception e){
+            resp.setStatus(400);
           }
         }
 
@@ -139,27 +142,25 @@ public class SongsServlet extends HttpServlet {
     if(req.getHeader("Content-Type").equals("application/json")){
       String body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
       if(isJSONValid(body)){
-        Songs song = gson.fromJson(body, Songs.class);
-        try{
+                try{
+          Songs song = gson.fromJson(body, Songs.class);
           em.getTransaction().begin();
           em.persist(song);
           em.getTransaction().commit();
-          //em.flush();
           int id = song.getId();
           resp.setStatus(201);
           resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
-        } catch (Exception ex) { //Aus Platzgründen, besser jede Exception einzeln fangen
+
+        }catch(Exception e){
           em.getTransaction().rollback();
-          ex.printStackTrace();
+          e.printStackTrace();
+          resp.setStatus(406);
         }
-      }
-      else{
+      }else{
         resp.setStatus(406);
       }
-
     }
     else{
-      //406 not acceptable
       resp.setStatus(406);
     }
   }
@@ -168,7 +169,6 @@ public class SongsServlet extends HttpServlet {
     try {
       Gson gson = new Gson();
       gson.fromJson(jsonInString, Object.class);
-
       return true;
     } catch(com.google.gson.JsonSyntaxException ex) {
       return false;
