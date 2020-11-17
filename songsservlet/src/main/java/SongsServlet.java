@@ -47,8 +47,6 @@ public class SongsServlet extends HttpServlet {
     Map<String, String[]> parameterMap = req.getParameterMap();
     StringBuilder stringBuilder = new StringBuilder();
 
-
-
     //hier wird geprüft, dass nur ein Parameter übergeben wird
     if(parameterMap.size()!=1){
       resp.setStatus(400);
@@ -137,6 +135,7 @@ public class SongsServlet extends HttpServlet {
     try (PrintWriter out = resp.getWriter()) {
       out.println(responseStr);
     }
+    em.close();
   }
 
 
@@ -169,6 +168,7 @@ public class SongsServlet extends HttpServlet {
     else{
       resp.setStatus(406);
     }
+    em.close();
   }
 
   private static boolean isJSONValid(String jsonInString) {
