@@ -19,6 +19,10 @@
         <module>songsWS</module>
     </modules>
 
+  <properties>
+    <java.version>1.8.0_171</java.version>
+  </properties>
+
     <!-- deps, die alle sub modules brauchen -->
 	<dependencies>
         <dependency>
@@ -85,6 +89,8 @@
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
         </dependency>
+
+
 
     </dependencies>
     <build>
