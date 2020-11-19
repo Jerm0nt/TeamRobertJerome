@@ -38,11 +38,3 @@ jobs:
           docker cp ./songsservlet/target/songsservlet-*.war tomcat:/usr/local/tomcat/webapps
           docker exec tomcat ls /usr/local/tomcat/webapps
           sleep 120
-      - name: run TestScripts
-        run: |
-          servletfile=$(ls ./songsservlet/target/songsservlet-*.war)
-          servletname=$(basename $servletfile .war)
-          echo $servletname
-          sh ./songsservlet/scripts/getTester.sh $servletname
-          sh ./songsservlet/scripts/postTester.sh $servletname
-          sh ./songsservlet/scripts/putAndDeleteTester.sh $servletname
