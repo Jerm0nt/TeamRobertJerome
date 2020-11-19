@@ -26,24 +26,26 @@ public class SongsServlet extends HttpServlet {
 
   private static final String PERSISTENCE_UNIT_NAME = "songdb";
   EntityManager em;
+  EntityManagerFactory factory;
 
 
   @Override
   public void init(ServletConfig servletConfig) throws ServletException {
 // Datei persistence.xml wird automatisch eingelesen, beim Start der Applikation, einmalig
     HibernatePersistenceProvider hp;
-    EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+    factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 // EntityManager bietet Zugriff auf Datenbank
-     em = factory.createEntityManager();
+
   }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    em = factory.createEntityManager();
+
     String responseStr = "";
     Enumeration<String> paramNames = req.getParameterNames();
     Map<String, String[]> parameterMap = req.getParameterMap();
     StringBuilder stringBuilder = new StringBuilder();
-
 
     //hier wird geprüft, dass nur ein Parameter übergeben wird
     if(parameterMap.size()!=1){
@@ -133,16 +135,19 @@ public class SongsServlet extends HttpServlet {
     try (PrintWriter out = resp.getWriter()) {
       out.println(responseStr);
     }
+    em.close();
   }
 
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    em = factory.createEntityManager();
+
     Gson gson = new Gson();
     if(req.getHeader("Content-Type").equals("application/json")){
       String body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
       if(isJSONValid(body)){
-                try{
+        try{
           Songs song = gson.fromJson(body, Songs.class);
           em.getTransaction().begin();
           em.persist(song);
@@ -163,6 +168,7 @@ public class SongsServlet extends HttpServlet {
     else{
       resp.setStatus(406);
     }
+    em.close();
   }
 
   private static boolean isJSONValid(String jsonInString) {
