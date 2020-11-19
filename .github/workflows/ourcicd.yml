@@ -1,4 +1,4 @@
-name: songsservlet clean, build, test, package & run scripts
+name: ourcicd worklow
 
 on:
   push:
