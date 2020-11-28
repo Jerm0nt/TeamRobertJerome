@@ -36,11 +36,7 @@ public class SongsController {
     @GetMapping(value="/{id}", produces="text/plain")
     public ResponseEntity<String> getUser(
             @PathVariable (value="id") Integer id) throws IOException {
-        /*User user = userDAO.getUserById(id);
-        if (user != null) {
-            return new ResponseEntity<User>(user, HttpStatus.OK);
-        }
-        return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);*/
+
       return new ResponseEntity<String>(id.toString(), HttpStatus.OK);
     }
 
