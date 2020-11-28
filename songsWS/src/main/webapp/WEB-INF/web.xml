@@ -6,11 +6,11 @@
          version="3.1">
   <display-name>A Songs Web Service</display-name>
   <servlet>
-    <servlet-name>songs</servlet-name>
+    <servlet-name>teamRobertJerome</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>songs</servlet-name>
+    <servlet-name>teamRobertJerome</servlet-name>
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
 </web-app>

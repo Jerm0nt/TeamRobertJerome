@@ -10,7 +10,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>htwb.ai.TeamRobertJerome</groupId>
 	<artifactId>songsWS</artifactId>
-	<name>A Songs Web Service</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,6 +18,7 @@
 
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+  <name>songsws-TeamRobertJerome</name>
 	<url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
