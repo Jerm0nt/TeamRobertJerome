@@ -52,7 +52,13 @@ public class SongsController {
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<String> getSong(@RequestHeader("Accept") String accept,
             @PathVariable (value="id") Integer id) throws Exception {
-      Songs song = songsDAOImpl.getSong(id);
+      Songs song;
+      try{
+        song = songsDAOImpl.getSong(id);
+      }
+      catch(Exception e){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
       String returnString = new String();
 
       if(accept.contains("application/json") || accept.equals("/")) {
