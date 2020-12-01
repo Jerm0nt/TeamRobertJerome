@@ -7,6 +7,7 @@ import htwb.ai.TeamRobertJerome.model.Songs;
 import htwb.ai.TeamRobertJerome.services.ISongsDAO;
 import htwb.ai.TeamRobertJerome.services.SongsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -95,7 +96,9 @@ public class SongsController {
       Gson gson = new GsonBuilder().serializeNulls().create();
       try {
         Songs song = gson.fromJson(jsonBody, Songs.class);
-        songsDAOImpl.postSong(song);
+        int id = songsDAOImpl.postSong(song);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", String.valueOf(id));
         return new ResponseEntity(HttpStatus.CREATED);
       } catch (Exception e) {
         e.printStackTrace();

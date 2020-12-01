@@ -10,5 +10,5 @@ public interface ISongsDAO {
 
     public List<Songs> getAllSongs() throws Exception;
 
-    public void postSong(Songs song) throws Exception;
+    public int postSong(Songs song) throws Exception;
 }
