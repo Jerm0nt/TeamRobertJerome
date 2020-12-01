@@ -55,12 +55,12 @@ public class SongsController {
       Songs song = songsDAOImpl.getSong(id);
       String returnString = new String();
 
-      if(accept.equals("application/json")) {
+      if(accept.contains("application/json") || accept.equals("/")) {
         Gson gson = new GsonBuilder().serializeNulls().create();
         returnString = gson.toJson(song);
       }
 
-      else if(accept.equals("application/xml")){
+      else if(accept.contains("application/xml")){
         XmlMapper xmlMapper = new XmlMapper();
         returnString = xmlMapper.writeValueAsString(song);
       }
@@ -72,7 +72,7 @@ public class SongsController {
       List<Songs> songsList = songsDAOImpl.getAllSongs();
       String returnString = new String();
 
-      if(accept.contains("application/json") || accept.contains("/")){
+      if(accept.contains("application/json") || accept.equals("/")){
         Gson gson = new GsonBuilder().serializeNulls().create();
         returnString = gson.toJson(songsList);
       }
@@ -95,7 +95,6 @@ public class SongsController {
         e.printStackTrace();
         return new ResponseEntity((HttpStatus.NOT_ACCEPTABLE));
       }
-
     }
 
 }
