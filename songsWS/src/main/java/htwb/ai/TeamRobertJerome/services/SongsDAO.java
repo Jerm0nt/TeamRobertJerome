@@ -1,10 +1,12 @@
 package htwb.ai.TeamRobertJerome.services;
 
 import htwb.ai.TeamRobertJerome.model.Songs;
+import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public class SongsDAO implements ISongsDAO{
@@ -55,4 +57,21 @@ public class SongsDAO implements ISongsDAO{
       throw new Exception("only title is allowed null");
     }
   }
+
+  @Override
+  public void putSong(int id, Songs song)throws InvalidParameterException {
+    try{
+      if(song.getId()==id) {
+        em = factory.createEntityManager();
+        em.createQuery("UPDATE a FROM Songs a WHERE id=" + id + "", Songs.class);
+        em.close();
+      }
+      else{
+        throw new InvalidParameterException("ID ungleich Songid");
+      }
+    }
+    catch ()
+  }
+
+
 }

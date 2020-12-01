@@ -2,6 +2,7 @@ package htwb.ai.TeamRobertJerome.services;
 
 import htwb.ai.TeamRobertJerome.model.Songs;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public interface ISongsDAO {
@@ -11,4 +12,6 @@ public interface ISongsDAO {
     public List<Songs> getAllSongs() throws Exception;
 
     public int postSong(Songs song) throws Exception;
+
+    public void putSong(int id,Songs song) throws InvalidParameterException;
 }

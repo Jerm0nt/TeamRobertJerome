@@ -106,5 +106,10 @@ public class SongsController {
       }
     }
 
+    @PutMapping(value="/{id}", consumes ="application/json")
+  public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id){
+      Gson gson = new GsonBuilder().serializeNulls().create();
+      Songs song = gson.fromJson(jsonBody, Songs.class);
+    }
 }
 
