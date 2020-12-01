@@ -15,5 +15,9 @@
 
   <context:component-scan base-package="htwb.ai.TeamRobertJerome" />
 
+  <bean id="songDAO" class="htwb.ai.TeamRobertJerome.services.SongsDAO">
+    <property name="PERSISTENCE_UNIT_NAME" value="songdb"/>
+  </bean>
+
 
 </beans>
