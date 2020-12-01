@@ -49,8 +49,8 @@ public class SongsController {
     }*/
 
     //GET http://localhost:8080/authSpring/rest/authNoDI/1
-    @GetMapping(value="/{id}", produces="text/plain")
-    public ResponseEntity<String> getUser(@RequestHeader("Accept") String accept,
+    @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
+    public ResponseEntity<String> getSong(@RequestHeader("Accept") String accept,
             @PathVariable (value="id") Integer id) throws Exception {
       Songs song = songsDAOImpl.getSong(id);
       String returnString = new String();
@@ -67,12 +67,12 @@ public class SongsController {
       return new ResponseEntity<String>(returnString, HttpStatus.OK);
     }
 
-    @GetMapping(produces="text/plain")
+    @GetMapping(produces = {"application/json", "application/xml"})
     public ResponseEntity<String> allSongs(@RequestHeader("Accept") String accept) throws Exception {
       List<Songs> songsList = songsDAOImpl.getAllSongs();
       String returnString = new String();
 
-      if(accept.contains("application/json")){
+      if(accept.contains("application/json") || accept.contains("/")){
         Gson gson = new GsonBuilder().serializeNulls().create();
         returnString = gson.toJson(songsList);
       }
@@ -82,6 +82,20 @@ public class SongsController {
       }
       System.out.println(returnString);
       return new ResponseEntity<String>(returnString, HttpStatus.OK);
+    }
+
+    @PostMapping(consumes = "application/json")
+     public ResponseEntity postSong(@RequestBody String jsonBody){
+      Gson gson = new GsonBuilder().serializeNulls().create();
+      try {
+        Songs song = gson.fromJson(jsonBody, Songs.class);
+        songsDAOImpl.postSong(song);
+        return new ResponseEntity(HttpStatus.CREATED);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return new ResponseEntity((HttpStatus.NOT_ACCEPTABLE));
+      }
+
     }
 
 }

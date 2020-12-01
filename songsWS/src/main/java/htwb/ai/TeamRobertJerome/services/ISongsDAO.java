@@ -9,4 +9,6 @@ public interface ISongsDAO {
     public Songs getSong(int id) throws Exception;
 
     public List<Songs> getAllSongs() throws Exception;
+
+    public void postSong(Songs song) throws Exception;
 }

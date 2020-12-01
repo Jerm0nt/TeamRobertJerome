@@ -41,4 +41,18 @@ public class SongsDAO implements ISongsDAO{
       return songs;
     }
   }
+
+  @Override
+  public void postSong(Songs song) throws Exception{
+    try {
+      em = factory.createEntityManager();
+      em.getTransaction().begin();
+      em.persist(song);
+      em.getTransaction().commit();
+      int id = song.getId();
+    }
+    catch (Exception e){
+      throw new Exception("only title is allowed null");
+    }
+  }
 }
