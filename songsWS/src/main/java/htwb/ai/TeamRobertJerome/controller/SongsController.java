@@ -118,7 +118,6 @@ public class SongsController {
       } catch (NotFoundException e) {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.NOT_FOUND);
-
       }
       catch (InvalidParameterException e){
         e.printStackTrace();
@@ -126,6 +125,15 @@ public class SongsController {
       }
     }
 
-
+    @DeleteMapping(value="/{id}")
+  public ResponseEntity deleteSong(@PathVariable (value="id") Integer id){
+      try {
+        songsDAOImpl.deleteSong(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+      } catch (NotFoundException e) {
+        e.printStackTrace();
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+      }
+    }
 }
 

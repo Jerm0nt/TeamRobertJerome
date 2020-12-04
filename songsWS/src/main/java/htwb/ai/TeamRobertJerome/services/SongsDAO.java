@@ -63,6 +63,7 @@ public class SongsDAO implements ISongsDAO{
   public void putSong(int id, Songs song)throws InvalidParameterException, NotFoundException {
     try{
       if(song.getId()==id) {
+        em = factory.createEntityManager();
         em.getTransaction().begin();
         em.merge(song);
         em.getTransaction().commit();
@@ -77,5 +78,15 @@ public class SongsDAO implements ISongsDAO{
     }
   }
 
+  @Override
+  public void deleteSong(int id) throws NotFoundException {
+    try{
+      Songs song = this.getSong(id);
+      em.remove(song);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new NotFoundException("song mit id existiert nicht");
+    }
+  }
 
 }
