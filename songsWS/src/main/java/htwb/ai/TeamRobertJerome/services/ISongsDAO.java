@@ -1,6 +1,7 @@
 package htwb.ai.TeamRobertJerome.services;
 
 import htwb.ai.TeamRobertJerome.model.Songs;
+import javassist.NotFoundException;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -13,5 +14,5 @@ public interface ISongsDAO {
 
     public int postSong(Songs song) throws Exception;
 
-    public void putSong(int id,Songs song) throws InvalidParameterException, Exception;
+    public void putSong(int id,Songs song) throws InvalidParameterException, NotFoundException;
 }

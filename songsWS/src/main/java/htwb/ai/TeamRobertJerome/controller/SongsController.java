@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import htwb.ai.TeamRobertJerome.model.Songs;
 import htwb.ai.TeamRobertJerome.services.ISongsDAO;
 import htwb.ai.TeamRobertJerome.services.SongsDAO;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,18 @@ public class SongsController {
   public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id){
       Gson gson = new GsonBuilder().serializeNulls().create();
       Songs song = gson.fromJson(jsonBody, Songs.class);
+      try {
+        songsDAOImpl.putSong(id,song);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+      } catch (NotFoundException e) {
+        e.printStackTrace();
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+      }
+      catch (InvalidParameterException e){
+        e.printStackTrace();
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+      }
     }
 }
 

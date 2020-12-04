@@ -1,6 +1,7 @@
 package htwb.ai.TeamRobertJerome.services;
 
 import htwb.ai.TeamRobertJerome.model.Songs;
+import javassist.NotFoundException;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
@@ -59,7 +60,7 @@ public class SongsDAO implements ISongsDAO{
   }
 
   @Override
-  public void putSong(int id, Songs song)throws InvalidParameterException, Exception {
+  public void putSong(int id, Songs song)throws InvalidParameterException, NotFoundException {
     try{
       if(song.getId()==id) {
         em.getTransaction().begin();
@@ -68,13 +69,11 @@ public class SongsDAO implements ISongsDAO{
         em.close();
       }
       else{
-        throw new InvalidParameterException("ID ungleich Songid");
+        throw new InvalidParameterException("ID ungleich Songid oder sonst was");
       }
     }
     catch (Exception e){
-      throw new Exception("mmmm");
+      throw new NotFoundException("Song mit id exisiterit nicht");
     }
   }
-
-
 }
