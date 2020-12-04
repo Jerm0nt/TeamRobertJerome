@@ -81,6 +81,7 @@ public class SongsDAO implements ISongsDAO{
   @Override
   public void deleteSong(int id) throws NotFoundException {
     try{
+      em = factory.createEntityManager();
       Songs song = this.getSong(id);
       em.remove(song);
     } catch (Exception e) {
