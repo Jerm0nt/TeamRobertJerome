@@ -64,7 +64,7 @@ public class SongsController {
       }
       String returnString = new String();
 
-      if(accept.contains("application/json") || accept.equals("/")) {
+      if(accept.contains("application/json")) {
         Gson gson = new GsonBuilder().serializeNulls().create();
         returnString = gson.toJson(song);
       }
@@ -81,7 +81,7 @@ public class SongsController {
       List<Songs> songsList = songsDAOImpl.getAllSongs();
       String returnString = new String();
 
-      if(accept.contains("application/json") || accept.equals("/")){
+      if(accept.contains("application/json")){
         Gson gson = new GsonBuilder().serializeNulls().create();
         returnString = gson.toJson(songsList);
       }
@@ -100,8 +100,8 @@ public class SongsController {
         Songs song = gson.fromJson(jsonBody, Songs.class);
         int id = songsDAOImpl.postSong(song);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", String.valueOf(id));
-        return new ResponseEntity(HttpStatus.CREATED);
+        headers.set("Location", String.valueOf(id));
+        return new ResponseEntity(headers, HttpStatus.CREATED);
       } catch (Exception e) {
         e.printStackTrace();
         return new ResponseEntity((HttpStatus.NOT_ACCEPTABLE));
@@ -125,5 +125,7 @@ public class SongsController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
       }
     }
+
+
 }
 
