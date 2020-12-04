@@ -16,5 +16,4 @@ public interface ISongsDAO {
 
     public void putSong(int id,Songs song) throws InvalidParameterException, NotFoundException;
 
-    public void deleteSong(int id);
 }
