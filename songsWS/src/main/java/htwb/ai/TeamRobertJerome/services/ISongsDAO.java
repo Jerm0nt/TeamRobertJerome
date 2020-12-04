@@ -13,5 +13,5 @@ public interface ISongsDAO {
 
     public int postSong(Songs song) throws Exception;
 
-    public void putSong(int id,Songs song) throws InvalidParameterException;
+    public void putSong(int id,Songs song) throws InvalidParameterException, Exception;
 }

@@ -59,18 +59,21 @@ public class SongsDAO implements ISongsDAO{
   }
 
   @Override
-  public void putSong(int id, Songs song)throws InvalidParameterException {
+  public void putSong(int id, Songs song)throws InvalidParameterException, Exception {
     try{
       if(song.getId()==id) {
-        em = factory.createEntityManager();
-        em.createQuery("UPDATE a FROM Songs a WHERE id=" + id + "", Songs.class);
+        em.getTransaction().begin();
+        em.merge(song);
+        em.getTransaction().commit();
         em.close();
       }
       else{
         throw new InvalidParameterException("ID ungleich Songid");
       }
     }
-    catch ()
+    catch (Exception e){
+      throw new Exception("mmmm");
+    }
   }
 
 
