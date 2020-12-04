@@ -53,7 +53,7 @@ public class SongsController {
       }
       else {
         Gson gson = new GsonBuilder().serializeNulls().create();
-        returnString = gson.toJson(songsList);
+        returnString = gson.toJson(song);
       }
       return new ResponseEntity<String>(returnString, HttpStatus.OK);
     }
