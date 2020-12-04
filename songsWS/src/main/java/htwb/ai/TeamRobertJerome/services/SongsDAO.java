@@ -52,6 +52,7 @@ public class SongsDAO implements ISongsDAO{
       em.getTransaction().begin();
       em.persist(song);
       em.getTransaction().commit();
+      em.close();
       return song.getId();
     }
     catch (Exception e){
@@ -82,8 +83,9 @@ public class SongsDAO implements ISongsDAO{
   public void deleteSong(int id) throws NotFoundException {
     try{
       em = factory.createEntityManager();
-      Songs song = this.getSong(id);
+      Songs song = em.find(Songs.class, id);;
       em.remove(song);
+      em.close();
     } catch (Exception e) {
       e.printStackTrace();
       throw new NotFoundException("song mit id existiert nicht");
