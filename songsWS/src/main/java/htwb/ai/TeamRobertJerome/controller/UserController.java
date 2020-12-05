@@ -1,13 +1,17 @@
 package htwb.ai.TeamRobertJerome.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import htwb.ai.TeamRobertJerome.model.User;
 import htwb.ai.TeamRobertJerome.services.IUserDAO;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value="/auth")
@@ -19,21 +23,23 @@ public class UserController {
   public UserController(IUserDAO userDAO){ userDAOImpl = userDAO; }
 
   @PostMapping(produces = "text/plain", consumes ="application/json")
-  // authorize eigentlich nicht per GET!!
-  public ResponseEntity<String> authorize(
-    @RequestParam("userId") String userId,
-    @RequestParam("password") String password)
+  public ResponseEntity<String> authorize(@RequestBody String jsonBody)
     throws IOException {
-    User user = userDAOImpl.getUserByUserId(userId);
-    if (user == null || user.getUserId() == null ||
-      user.getPassword() == null) {
+    try{
+      Gson gson = new GsonBuilder().serializeNulls().create();
+      User reqUser = gson.fromJson(jsonBody, User.class);
+      String password = reqUser.getPassword();
+      User user = userDAOImpl.getUserByUserId(reqUser.getUserId());
+      if (user.getPassword().equals(password)) {
+        UUID uuid = UUID.randomUUID();
+        return new ResponseEntity<String> (uuid.toString(), HttpStatus.OK);
+      }else{
+        return new ResponseEntity<String> ("Declined!!", HttpStatus.UNAUTHORIZED);
+      }
+    }catch(NotFoundException e){
       return new ResponseEntity<String>("Declined: No such user!",
         HttpStatus.UNAUTHORIZED);
     }
 
-    if (user.getUserId().equals(userId) && user.getPassword().equals(password)) {
-      return new ResponseEntity<String> ("Welcome!!", HttpStatus.OK);
-    }
-    return new ResponseEntity<String> ("Declined!!", HttpStatus.UNAUTHORIZED);
   }
 }

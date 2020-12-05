@@ -1,12 +1,34 @@
 package htwb.ai.TeamRobertJerome.model;
 
+import org.springframework.web.bind.annotation.Mapping;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name= "ouruser")
 public class User {
   private String userId;
   private String password;
+  private String firstName;
+  private String lastName;
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
   @Id
   public String getUserId() {
