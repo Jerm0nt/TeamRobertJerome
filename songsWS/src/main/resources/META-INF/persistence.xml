@@ -7,6 +7,8 @@
 
     <class>htwb.ai.TeamRobertJerome.model.Songs</class>
 
+    <class>htwb.ai.TeamRobertJerome.model.User</class>
+
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 

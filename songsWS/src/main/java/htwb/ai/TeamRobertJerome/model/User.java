@@ -9,7 +9,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name= "ouruser")
 public class User {
+  @Id
   private String userId;
+
   private String password;
   private String firstName;
   private String lastName;
@@ -30,7 +32,6 @@ public class User {
     this.lastName = lastName;
   }
 
-  @Id
   public String getUserId() {
     return userId;
     }
