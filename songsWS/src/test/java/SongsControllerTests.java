@@ -26,7 +26,8 @@ public class SongsControllerTests {
   static String acceptAll;
   static String acceptDecline;
   static String testJSONBodyGood;
-  static String testJSONBodyBad;
+  static String testJSONBodyBadTitle;
+  static String testJSONBodyFalse;
   static Songs testSong;
   static String returnStringJSON;
   static String returnStringXML;
@@ -47,7 +48,8 @@ public class SongsControllerTests {
     acceptAll = "/";
     acceptDecline = "text/plain";
     testJSONBodyGood = "{\"title\":\"Wrecking Ball\",\"artist\":\"MILEY" + "CYRUS\",\"label\":\"RCA\",\"released\":2013}";
-    testJSONBodyBad = "{\"artist\":\"MILEY\n" + "CYRUS\",\"label\":\"RCA\",\"released\":2013} ";
+    testJSONBodyBadTitle = "{\"artist\":\"MILEY\n" + "CYRUS\",\"label\":\"RCA\",\"released\":2013} ";
+    testJSONBodyFalse = "ich bin kein JSON-Body, vallah!";
     returnStringJSON = "{\"id\":0,\"title\":\"Wrecking Ball\",\"artist\":\"MILEY" + "CYRUS\",\"label\":\"RCA\",\"released\":2013}";
     returnStringXML ="<Songs>"+"<id>0</id>" + "<title>Wrecking Ball</title>" + "<artist>MILEY" +
       "CYRUS</artist>" + "<label>RCA</label>" + "<released>2013</released>"+"</Songs>";
@@ -60,6 +62,7 @@ public class SongsControllerTests {
     testSongListXMLString = xmlMapper.writeValueAsString(testSongList);
   }
 
+  //getSong(int id, String accept)-Tests
   @Test
   public void getSongTest1GoodJSON() throws Exception {
     when(mockSongsDAO.getSong(Mockito.anyInt())).thenReturn(testSong);
@@ -110,6 +113,8 @@ public class SongsControllerTests {
     HttpStatus testStatus = testResponse.getStatusCode();
     Assertions.assertTrue(testStatus.equals(HttpStatus.NOT_ACCEPTABLE));
   }*/
+
+  //allSongs(String accept)-Tests
   @Test
   public void allSongsTest1GoodJSON() throws Exception {
 
@@ -127,6 +132,56 @@ public class SongsControllerTests {
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.OK));
     String test = testResponse.getBody();
     Assertions.assertTrue(test.equals(testSongListXMLString));
+  }
+  @Test
+  public void allSongsTest3ExceptionJSON() throws Exception {
+    when(mockSongsDAO.getAllSongs()).thenThrow(Exception.class);
+    ResponseEntity<String> testResponse = songsController.allSongs(acceptJSON);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
+  }
+  @Test
+  public void allSongsTest4ExceptionXML() throws Exception {
+    when(mockSongsDAO.getAllSongs()).thenThrow(Exception.class);
+    ResponseEntity<String> testResponse = songsController.allSongs(acceptXML);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
+  }
+  @Test
+  public void allSongsTest5GoodAll() throws Exception {
+
+    when(mockSongsDAO.getAllSongs()).thenReturn(testSongList);
+    ResponseEntity<String> testResponse = songsController.allSongs(acceptAll);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.OK));
+    String test = testResponse.getBody();
+    Assertions.assertTrue(test.equals(testSongListJSONString));
+  }
+  @Test
+  public void allSongsTest6ExceptionAll() throws Exception {
+    when(mockSongsDAO.getAllSongs()).thenThrow(Exception.class);
+    ResponseEntity<String> testResponse = songsController.allSongs(acceptAll);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
+  }
+
+  //postSong(String jsonBody)-Tests
+  @Test
+  public void postSongTest1Good() throws Exception {
+    when(mockSongsDAO.postSong(Mockito.any())).thenReturn(testIDExistent);
+    ResponseEntity<String> testResponse = songsController.postSong(testJSONBodyGood);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.CREATED));
+    Assertions.assertTrue(testResponse.getHeaders().getLocation().toString().equals("http://localhost:8080/songsWS_war/rest/songs/"+testIDExistent));
+  }
+
+  @Test
+  public void postSongTest2BadTitle() throws Exception{
+    when(mockSongsDAO.postSong(Mockito.any())).thenThrow(Exception.class);
+    ResponseEntity<String> testResponse = songsController.postSong(testJSONBodyBadTitle);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_ACCEPTABLE));
+  }
+
+  @Test
+  public void postSongTest3BadJson() throws Exception{
+    when(mockSongsDAO.postSong(Mockito.any())).thenReturn(testIDExistent);
+    ResponseEntity<String> testResponse = songsController.postSong(testJSONBodyFalse);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_ACCEPTABLE));
   }
 
 }

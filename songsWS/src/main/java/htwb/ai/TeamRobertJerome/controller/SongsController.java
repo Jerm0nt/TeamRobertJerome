@@ -1,5 +1,6 @@
 package htwb.ai.TeamRobertJerome.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -59,8 +60,13 @@ public class SongsController {
     }
 
     @GetMapping(produces = {"application/json", "application/xml"})
-    public ResponseEntity<String> allSongs(@RequestHeader("Accept") String accept) throws Exception {
-      List<Songs> songsList = songsDAOImpl.getAllSongs();
+    public ResponseEntity<String> allSongs(@RequestHeader("Accept") String accept) throws JsonProcessingException {
+      List<Songs> songsList = null;
+      try {
+        songsList = songsDAOImpl.getAllSongs();
+      } catch (Exception e) {
+        return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+      }
       String returnString = new String();
 
       if(accept.contains("application/json")){
@@ -87,13 +93,14 @@ public class SongsController {
         Songs song = gson.fromJson(jsonBody, Songs.class);
         int id = songsDAOImpl.postSong(song);
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Location", String.valueOf(id));
+        headers.set("Location", "http://localhost:8080/songsWS_war/rest/songs/"+String.valueOf(id));
         return new ResponseEntity(headers, HttpStatus.CREATED);
       } catch (Exception e) {
         e.printStackTrace();
         return new ResponseEntity((HttpStatus.NOT_ACCEPTABLE));
       }
     }
+
 
     @PutMapping(value="/{id}", consumes ="application/json")
   public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id){
