@@ -19,5 +19,9 @@
     <property name="PERSISTENCE_UNIT_NAME" value="songdb"/>
   </bean>
 
+  <bean id="userDAO" class="htwb.ai.TeamRobertJerome.services.UserDAO">
+    <property name="PERSISTENCE_UNIT_NAME" value="songdb"/>
+  </bean>
+
 
 </beans>
