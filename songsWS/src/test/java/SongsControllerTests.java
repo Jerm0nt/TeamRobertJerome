@@ -1,11 +1,14 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import htwb.ai.TeamRobertJerome.controller.SongsController;
 import htwb.ai.TeamRobertJerome.model.Songs;
 import htwb.ai.TeamRobertJerome.services.SongsDAO;
 import javassist.NotFoundException;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
@@ -13,33 +16,35 @@ import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 public class SongsControllerTests {
-  static SongsDAO mockSongsDAO;
-  static SongsController songsController;
-  static int testIDExistent;
-  static int testIDNichtExistent;
-  static String acceptJSON;
-  static String acceptXML;
-  static String acceptAll;
-  static String acceptDecline;
-  static String testJSONBodyGood;
-  static String testJSONBodyBadTitle;
-  static String testJSONBodyFalse;
-  static Songs testSong;
-  static String returnStringJSON;
-  static String returnStringXML;
-  static List<Songs> testSongList;
-  static String testSongListJSONString;
-  static String testSongListXMLString;
+  SongsDAO mockSongsDAO;
+  SongsController songsController;
+  int testIDExistent;
+  int testIDNichtExistent;
+  String acceptJSON;
+  String acceptXML;
+  String acceptAll;
+  String acceptDecline;
+  String testJSONBodyGood;
+  String testJSONBodyBadTitle;
+  String testJSONBodyFalse;
+  Songs testSong;
+  String returnStringJSON;
+  String returnStringXML;
+  List<Songs> testSongList;
+  String testSongListJSONString;
+  String testSongListXMLString;
 
 
-  @BeforeAll
-  public static void setUp() throws JsonProcessingException {
+  @BeforeEach
+  public void setUpTests() throws JsonProcessingException {
     mockSongsDAO = Mockito.mock(SongsDAO.class);
     songsController = new SongsController(mockSongsDAO);
     testIDExistent = 1;
@@ -187,14 +192,22 @@ public class SongsControllerTests {
   }
 
   @Test
-  public void putSongTest1Good() throws Exception{
+  public void putSongTest1Good(){
     ResponseEntity<String> testResponse = songsController.putSong(testJSONBodyGood, testIDExistent);
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NO_CONTENT));
   }
 
   @Test
-  public void putSongTest2BadJson() throws Exception{
+  public void putSongTest2BadJson(){
     ResponseEntity<String> testResponse = songsController.putSong(testJSONBodyFalse, testIDExistent);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+  }
+
+  @Test
+  public void putSong3TestBadIdMatchiong() throws Exception{
+    doThrow(InvalidParameterException.class).when(mockSongsDAO).putSong(Mockito.anyInt(),Mockito.any());
+    ResponseEntity<String> testResponse = songsController.putSong(returnStringJSON, testIDExistent);
+    String testStatus = testResponse.getStatusCode().toString();
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.BAD_REQUEST));
   }
 

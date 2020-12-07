@@ -33,7 +33,7 @@ public class SongsController {
 
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<String> getSong(@RequestHeader("Accept") String accept,
-            @PathVariable (value="id") Integer id) throws Exception {
+            @PathVariable (value="id") Integer id) {
       Songs song;
       try{
         song = songsDAOImpl.getSong(id);
@@ -50,7 +50,11 @@ public class SongsController {
 
       else if(accept.contains("application/xml")){
         XmlMapper xmlMapper = new XmlMapper();
-        returnString = xmlMapper.writeValueAsString(song);
+        try {
+          returnString = xmlMapper.writeValueAsString(song);
+        } catch (JsonProcessingException e) {
+          return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
       }
       else {
         Gson gson = new GsonBuilder().serializeNulls().create();
@@ -113,8 +117,7 @@ public class SongsController {
       } catch (NotFoundException e) {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.NOT_FOUND);
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
       }
