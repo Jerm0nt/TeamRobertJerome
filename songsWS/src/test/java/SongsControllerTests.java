@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import htwb.ai.TeamRobertJerome.controller.SongsController;
 import htwb.ai.TeamRobertJerome.model.Songs;
 import htwb.ai.TeamRobertJerome.services.SongsDAO;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -183,5 +185,18 @@ public class SongsControllerTests {
     ResponseEntity<String> testResponse = songsController.postSong(testJSONBodyFalse);
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_ACCEPTABLE));
   }
+
+  @Test
+  public void putSongTest1Good() throws Exception{
+    ResponseEntity<String> testResponse = songsController.putSong(testJSONBodyGood, testIDExistent);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NO_CONTENT));
+  }
+
+  @Test
+  public void putSongTest2BadJson() throws Exception{
+    ResponseEntity<String> testResponse = songsController.putSong(testJSONBodyFalse, testIDExistent);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+  }
+
 
 }
