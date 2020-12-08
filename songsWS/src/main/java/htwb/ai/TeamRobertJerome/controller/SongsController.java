@@ -107,7 +107,7 @@ public class SongsController {
 
 
     @PutMapping(value="/{id}", consumes ="application/json")
-  public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id){
+  public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id) {
 
       try {
         Gson gson = new GsonBuilder().serializeNulls().create();
@@ -117,7 +117,7 @@ public class SongsController {
       } catch (NotFoundException e) {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.NOT_FOUND);
-      } catch (Exception e) {
+      } catch (InvalidParameterException e) {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
       }

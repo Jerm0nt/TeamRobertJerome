@@ -112,16 +112,6 @@ public class SongsControllerTests {
     ResponseEntity<String> testResponse = songsController.getSong(acceptAll,testIDNichtExistent);
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
   }
-  /* Spring Framework greift nicht -> antwortet mit Status 200
-  @Test
-  public void getSongTest7TextPlain() throws Exception {
-    when(mockSongsDAO.getSong(Mockito.anyInt())).thenReturn(testSong);
-    ResponseEntity<String> testResponse = songsController.getSong(acceptDecline,testIDExistent);
-    HttpStatus testStatus = testResponse.getStatusCode();
-    Assertions.assertTrue(testStatus.equals(HttpStatus.NOT_ACCEPTABLE));
-  }*/
-
-  //allSongs(String accept)-Tests
   @Test
   public void allSongsTest1GoodJSON() throws Exception {
 
@@ -204,12 +194,17 @@ public class SongsControllerTests {
   }
 
   @Test
-  public void putSong3TestBadIdMatchiong() throws Exception{
+  public void putSong3TestBadIdMatching() throws Exception{
     doThrow(InvalidParameterException.class).when(mockSongsDAO).putSong(Mockito.anyInt(),Mockito.any());
     ResponseEntity<String> testResponse = songsController.putSong(returnStringJSON, testIDExistent);
     String testStatus = testResponse.getStatusCode().toString();
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.BAD_REQUEST));
   }
 
-
+  @Test
+  public void putsong4TestIDNotFound() throws Exception{
+    doThrow(NotFoundException.class).when(mockSongsDAO).putSong(Mockito.anyInt(),Mockito.any());
+    ResponseEntity<String> testResponse = songsController.putSong(returnStringJSON, 2000);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
+  }
 }

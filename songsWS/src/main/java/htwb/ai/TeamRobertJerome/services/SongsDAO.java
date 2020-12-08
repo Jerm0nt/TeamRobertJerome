@@ -3,11 +3,13 @@ package htwb.ai.TeamRobertJerome.services;
 import htwb.ai.TeamRobertJerome.model.Songs;
 import javassist.NotFoundException;
 import org.hibernate.Session;
+import org.postgresql.util.PSQLException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.security.InvalidParameterException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class SongsDAO implements ISongsDAO{
@@ -62,21 +64,29 @@ public class SongsDAO implements ISongsDAO{
 
   @Override
   public void putSong(int id, Songs song)throws InvalidParameterException, NotFoundException {
+    /*if(song.getTitle()==null){
+        throw new Exception("Title darf nich null sein");
+    }*/
+    if (song.getId()!=id){
+      throw new InvalidParameterException("ID ungleich Songid oder sonst was");
+    }
+    em = factory.createEntityManager();
+    em.getTransaction().begin();
+    Songs testSong = em.find(Songs.class, id);
+    if(testSong==null){
+      throw new NotFoundException("Kein Song mit dieser id!");
+    }
     try{
-      if(song.getId()==id) {
-        em = factory.createEntityManager();
-        em.getTransaction().begin();
-        em.merge(song);
-        em.getTransaction().commit();
-        em.close();
-      }
-      else{
-        throw new InvalidParameterException("ID ungleich Songid oder sonst was");
-      }
+      em.merge(song);
+      em.getTransaction().commit();
+      em.close();
+    }catch(Exception e){
+      throw new InvalidParameterException("Kein title angegeben!");
     }
-    catch (Exception e){
-      throw new NotFoundException("Song mit id exisiterit nicht");
-    }
+
+
+
+
   }
 
   @Override
