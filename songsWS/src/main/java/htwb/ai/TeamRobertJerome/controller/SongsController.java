@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import htwb.ai.TeamRobertJerome.model.Songs;
 import htwb.ai.TeamRobertJerome.services.ISongsDAO;
 import htwb.ai.TeamRobertJerome.services.SongsDAO;
@@ -118,6 +119,9 @@ public class SongsController {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.NOT_FOUND);
       } catch (InvalidParameterException e) {
+        e.printStackTrace();
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+      }catch (JsonSyntaxException e){
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
       }

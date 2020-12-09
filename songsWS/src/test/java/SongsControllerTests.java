@@ -202,9 +202,20 @@ public class SongsControllerTests {
   }
 
   @Test
-  public void putsong4TestIDNotFound() throws Exception{
+  public void putSong4TestIDNotFound() throws Exception{
     doThrow(NotFoundException.class).when(mockSongsDAO).putSong(Mockito.anyInt(),Mockito.any());
     ResponseEntity<String> testResponse = songsController.putSong(returnStringJSON, 2000);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
+  }
+  @Test
+  public void deleteSong1TestGood(){
+    ResponseEntity<String> testResponse = songsController.deleteSong(testIDExistent);
+    Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NO_CONTENT));
+  }
+  @Test
+  public void deleteSong2TestNotFound() throws Exception{
+    doThrow(NotFoundException.class).when(mockSongsDAO).deleteSong(2000);
+    ResponseEntity<String> testResponse = songsController.deleteSong(2000);
     Assertions.assertTrue(testResponse.getStatusCode().equals(HttpStatus.NOT_FOUND));
   }
 }
