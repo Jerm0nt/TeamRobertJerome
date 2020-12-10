@@ -2,6 +2,7 @@ package htwb.ai.TeamRobertJerome.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import htwb.ai.TeamRobertJerome.model.User;
 import htwb.ai.TeamRobertJerome.services.IUserDAO;
 import javassist.NotFoundException;
@@ -39,6 +40,8 @@ public class UserController {
     }catch(NotFoundException e){
       return new ResponseEntity<String>("Declined: No such user!",
         HttpStatus.UNAUTHORIZED);
+    }catch(JsonSyntaxException e){
+      return new ResponseEntity<String>("Bad Json Format!", HttpStatus.BAD_REQUEST);
     }
 
   }
