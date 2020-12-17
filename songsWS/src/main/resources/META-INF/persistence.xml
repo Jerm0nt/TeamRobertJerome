@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit transaction-type="RESOURCE_LOCAL" name="songdb">
+
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <class>htwb.ai.TeamRobertJerome.model.Songs</class>
+
+    <class>htwb.ai.TeamRobertJerome.model.User</class>
+
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+
+    <properties>
+
+    <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+
+    <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-247-107-109.eu-west-1.compute.amazonaws.com:5432/d6q7ka4c7096jg"/>
+
+    <property name="javax.persistence.jdbc.user" value="ojywbukzbfxleo"/>
+
+    <property name="javax.persistence.jdbc.password" value="150a47bc37d909af3399732a3229b9042e2db62cd1f1882504dff2b7b6bf479b"/>
+
+    <!--Hibernate properties-->
+
+
+    <property name="hibernate.show_sql" value="true"/>
+
+    <property name="hibernate.format_sql" value="false"/>
+
+    <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
+
+    <!-- The connection is released after each statement executionand reacquired prior to running the next statement. -->
+
+
+    <property name="hibernate.connection.release_mode" value="after_statement"/>
+
+    <!-- Connection pool properties -->
+
+
+    <property name="hibernate.c3p0.min_size" value="1"/>
+
+    <property name="hibernate.c3p0.max_size" value="8"/>
+
+    <!-- in seconds: When an idle connection is removed from the poolHibernate default: 0, never expire. -->
+
+
+    <property name="hibernate.c3p0.timeout" value="1800"/>
+
+    <!-- Number of prepared statements that will be cached.Hibernate default: 0 , caching is disable. -->
+
+
+    <property name="hibernate.c3p0.max_statements" value="50"/>
+
+ </properties>
+
+</persistence-unit>
+
+</persistence>
