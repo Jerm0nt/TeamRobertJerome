@@ -3,10 +3,6 @@ package TeamRobertJerome.main.services;
 import TeamRobertJerome.main.model.User;
 import javassist.NotFoundException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.ArrayList;
 
 public class UserDAO implements IUserDAO {
 
