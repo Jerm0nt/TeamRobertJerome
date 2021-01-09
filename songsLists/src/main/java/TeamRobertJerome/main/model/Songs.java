@@ -22,6 +22,11 @@ public class Songs {
 
   public Songs(){}
 
+  public Songs( int id, String title){
+    this.id  = id;
+    this.title = title;
+  }
+
   public int getId(){
     return id;
   }

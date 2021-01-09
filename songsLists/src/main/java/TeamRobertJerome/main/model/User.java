@@ -15,6 +15,11 @@ public class User {
   private String lastName;
   private String token;
 
+  public User (String firstName, String lastName){
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
   public String getFirstName() {
     return firstName;
   }

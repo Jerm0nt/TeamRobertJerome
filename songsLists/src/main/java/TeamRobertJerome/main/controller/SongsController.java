@@ -2,6 +2,7 @@ package TeamRobertJerome.main.controller;
 
 import TeamRobertJerome.main.model.Songs;
 import TeamRobertJerome.main.services.ISongsDAO;
+import TeamRobertJerome.main.services.SongsDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
@@ -21,15 +22,15 @@ import java.util.List;
 @RequestMapping(value="/songs")
 public class SongsController {
 
-  ISongsDAO songsDAOImpl;
+  ISongsDAO songsDAOImpl = new SongsDAO();
 
-  @Autowired
+  /*@Autowired
   public SongsController(ISongsDAO songDAO){
     songsDAOImpl = songDAO;
-  }
+  } */
 
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
-    public ResponseEntity<String> getSong(@RequestHeader("Accept") String accept,
+    public ResponseEntity<Songs> getSong(@RequestHeader("Accept") String accept,
                                           @PathVariable(value="id") Integer id) {
       Songs song;
       try{
@@ -38,53 +39,20 @@ public class SongsController {
       catch(Exception e){
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
-      String returnString = new String();
 
-      if(accept.contains("application/json")) {
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        returnString = gson.toJson(song);
-      }
-
-      else if(accept.contains("application/xml")){
-        XmlMapper xmlMapper = new XmlMapper();
-        try {
-          returnString = xmlMapper.writeValueAsString(song);
-        } catch (JsonProcessingException e) {
-          return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-      }
-      else {
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        returnString = gson.toJson(song);
-      }
-      return new ResponseEntity<String>(returnString, HttpStatus.OK);
+      return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
     @GetMapping(produces = {"application/json", "application/xml"})
-    public ResponseEntity<String> allSongs(@RequestHeader("Accept") String accept) throws JsonProcessingException {
+    public ResponseEntity<List<Songs>> allSongs(@RequestHeader("Accept") String accept) throws JsonProcessingException {
       List<Songs> songsList = null;
       try {
         songsList = songsDAOImpl.getAllSongs();
       } catch (Exception e) {
-        return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-      }
-      String returnString = new String();
-
-      if(accept.contains("application/json")){
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        returnString = gson.toJson(songsList);
-      }
-      else if(accept.contains("application/xml")){
-        XmlMapper xmlMapper = new XmlMapper();
-        returnString = xmlMapper.writeValueAsString(songsList);
-      }
-      else{
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        returnString = gson.toJson(songsList);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
 
-      System.out.println(returnString);
-      return new ResponseEntity<String>(returnString, HttpStatus.OK);
+      return new ResponseEntity<>(songsList, HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json")

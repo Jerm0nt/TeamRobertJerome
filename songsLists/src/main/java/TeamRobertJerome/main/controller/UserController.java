@@ -2,6 +2,7 @@ package TeamRobertJerome.main.controller;
 
 import TeamRobertJerome.main.model.User;
 import TeamRobertJerome.main.services.IUserDAO;
+import TeamRobertJerome.main.services.UserDAO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -21,12 +22,13 @@ import java.util.UUID;
 @RequestMapping(value="/auth")
 public class UserController {
 
-  static IUserDAO userDAOImpl;
+  IUserDAO userDAOImpl = new UserDAO();
 
+  /*
   @Autowired
   public UserController(IUserDAO userDAO){ userDAOImpl = userDAO; }
-
-  public static IUserDAO getUserDAOImpl(){
+*/
+  public  IUserDAO getUserDAOImpl(){
     return userDAOImpl;
   }
 
