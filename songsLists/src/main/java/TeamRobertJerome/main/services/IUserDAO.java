@@ -1,7 +1,7 @@
-package TeamRobertJerome.services;
+package TeamRobertJerome.main.services;
 
 
-import TeamRobertJerome.model.User;
+import TeamRobertJerome.main.model.User;
 import javassist.NotFoundException;
 
 public interface IUserDAO {

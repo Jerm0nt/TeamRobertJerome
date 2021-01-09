@@ -1,6 +1,6 @@
-package TeamRobertJerome.services;
+package TeamRobertJerome.main.services;
 
-import TeamRobertJerome.model.Songs;
+import TeamRobertJerome.main.model.Songs;
 import javassist.NotFoundException;
 
 import javax.persistence.EntityManager;

@@ -1,7 +1,7 @@
-package TeamRobertJerome.controller;
+package TeamRobertJerome.main.controller;
 
-import TeamRobertJerome.model.Songs;
-import TeamRobertJerome.services.ISongsDAO;
+import TeamRobertJerome.main.model.Songs;
+import TeamRobertJerome.main.services.ISongsDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;

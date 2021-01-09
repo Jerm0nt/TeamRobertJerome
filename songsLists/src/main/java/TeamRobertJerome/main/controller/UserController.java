@@ -1,7 +1,7 @@
-package TeamRobertJerome.controller;
+package TeamRobertJerome.main.controller;
 
-import TeamRobertJerome.model.User;
-import TeamRobertJerome.services.IUserDAO;
+import TeamRobertJerome.main.model.User;
+import TeamRobertJerome.main.services.IUserDAO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
