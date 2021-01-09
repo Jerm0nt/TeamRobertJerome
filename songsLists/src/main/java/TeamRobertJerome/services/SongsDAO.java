@@ -1,6 +1,6 @@
-package htwb.ai.TeamRobertJerome.services;
+package TeamRobertJerome.services;
 
-import htwb.ai.TeamRobertJerome.model.Songs;
+import TeamRobertJerome.model.Songs;
 import javassist.NotFoundException;
 
 import javax.persistence.EntityManager;
@@ -100,5 +100,4 @@ public class SongsDAO implements ISongsDAO{
       throw new NotFoundException("song mit id existiert nicht");
     }
   }
-
 }

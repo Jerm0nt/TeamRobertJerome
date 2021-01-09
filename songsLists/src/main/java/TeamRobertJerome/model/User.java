@@ -1,11 +1,11 @@
-package htwb.ai.TeamRobertJerome.model;
+package TeamRobertJerome.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "ouruser")
+@Table(name= "songuser")
 public class User {
   @Id
   private String userId;

@@ -1,10 +1,10 @@
-package htwb.ai.TeamRobertJerome.controller;
+package TeamRobertJerome.controller;
 
+import TeamRobertJerome.model.User;
+import TeamRobertJerome.services.IUserDAO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import htwb.ai.TeamRobertJerome.model.User;
-import htwb.ai.TeamRobertJerome.services.IUserDAO;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value="/auth")
 public class UserController {
-
 
   static IUserDAO userDAOImpl;
 

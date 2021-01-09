@@ -1,6 +1,6 @@
-package htwb.ai.TeamRobertJerome.services;
+package TeamRobertJerome.services;
 
-import htwb.ai.TeamRobertJerome.model.User;
+import TeamRobertJerome.model.User;
 import javassist.NotFoundException;
 
 import javax.persistence.EntityManager;

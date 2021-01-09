@@ -1,12 +1,12 @@
-package htwb.ai.TeamRobertJerome.controller;
+package TeamRobertJerome.controller;
 
+import TeamRobertJerome.model.Songs;
+import TeamRobertJerome.services.ISongsDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import htwb.ai.TeamRobertJerome.model.Songs;
-import htwb.ai.TeamRobertJerome.services.ISongsDAO;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,13 +28,9 @@ public class SongsController {
     songsDAOImpl = songDAO;
   }
 
-
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<String> getSong(@RequestHeader("Accept") String accept,
-                                          @PathVariable (value="id") Integer id
-                                          ,@RequestHeader("Authorization") String token
-                                          ) {
-      if(!UserController.getUserDAOImpl().isTokenValid(token)){return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);}
+                                          @PathVariable(value="id") Integer id) {
       Songs song;
       try{
         song = songsDAOImpl.getSong(id);
@@ -65,11 +61,7 @@ public class SongsController {
     }
 
     @GetMapping(produces = {"application/json", "application/xml"})
-    public ResponseEntity<String> allSongs(@RequestHeader("Accept") String accept
-                                           //,@RequestHeader("Authorization") String token
-    ) throws JsonProcessingException {
-
-    //if(!UserDAO.isTokenValid(token)){return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);}
+    public ResponseEntity<String> allSongs(@RequestHeader("Accept") String accept) throws JsonProcessingException {
       List<Songs> songsList = null;
       try {
         songsList = songsDAOImpl.getAllSongs();
@@ -96,10 +88,7 @@ public class SongsController {
     }
 
     @PostMapping(consumes = "application/json")
-     public ResponseEntity postSong(@RequestBody String jsonBody
-      //,@RequestHeader("Authorization") String token
-                                          ) {
-        //if(!UserDAO.isTokenValid(token)){return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);}
+     public ResponseEntity postSong(@RequestBody String jsonBody) {
       Gson gson = new GsonBuilder().serializeNulls().create();
       try {
         Songs song = gson.fromJson(jsonBody, Songs.class);
@@ -115,10 +104,7 @@ public class SongsController {
 
 
     @PutMapping(value="/{id}", consumes ="application/json")
-  public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id
-                                //,@RequestHeader("Authorization") String token
-    ) {
-      //if(!UserDAO.isTokenValid(token)){return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);}
+  public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id) {
       try {
         Gson gson = new GsonBuilder().serializeNulls().create();
         Songs song = gson.fromJson(jsonBody, Songs.class);
@@ -137,10 +123,7 @@ public class SongsController {
     }
 
     @DeleteMapping(value="/{id}")
-  public ResponseEntity deleteSong(@PathVariable (value="id") Integer id
-                                   //,@RequestHeader("Authorization") String token
-    ) {
-      //if(!UserDAO.isTokenValid(token)){return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);}
+  public ResponseEntity deleteSong(@PathVariable (value="id") Integer id) {
       try {
         songsDAOImpl.deleteSong(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
