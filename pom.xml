@@ -31,7 +31,16 @@
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-web</artifactId>
-          <version>2.4.1</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
         <dependency>
@@ -79,6 +88,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.18</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Der bessere connection pool -->
@@ -150,6 +160,8 @@
               </execution>
             </executions>
           </plugin>
+
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

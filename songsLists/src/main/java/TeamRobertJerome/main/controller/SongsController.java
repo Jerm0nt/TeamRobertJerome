@@ -2,6 +2,7 @@ package TeamRobertJerome.main.controller;
 
 import TeamRobertJerome.main.model.Songs;
 import TeamRobertJerome.main.services.ISongsDAO;
+import TeamRobertJerome.main.services.ISongsService;
 import TeamRobertJerome.main.services.SongsDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -13,13 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/songs")
+@RequestMapping(value="/rest/songs")
 public class SongsController {
 
   ISongsDAO songsDAOImpl = new SongsDAO();
@@ -28,8 +31,22 @@ public class SongsController {
   public SongsController(ISongsDAO songDAO){
     songsDAOImpl = songDAO;
   } */
+  @Autowired
+  private ISongsService songsService;
 
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
+    public ResponseEntity<Songs> getSong(@PathVariable(value="id") Integer id) {
+      Songs song;
+      try{
+        song = songsService.getSong(id);
+      }
+      catch(Exception e){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+
+    /*@GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<Songs> getSong(@RequestHeader("Accept") String accept,
                                           @PathVariable(value="id") Integer id) {
       Songs song;
@@ -41,9 +58,22 @@ public class SongsController {
       }
 
       return new ResponseEntity<>(song, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping(produces = {"application/json", "application/xml"})
+    public ResponseEntity<ArrayList<Songs>> allSongs(){
+
+      ArrayList songsList;
+      try {
+        songsList = songsService.findAll();
+      } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+
+      return new ResponseEntity<>(songsList, HttpStatus.OK);
+    }
+
+    /*@GetMapping(produces = {"application/json", "application/xml"})
     public ResponseEntity<List<Songs>> allSongs(@RequestHeader("Accept") String accept) throws JsonProcessingException {
       List<Songs> songsList = null;
       try {
@@ -53,9 +83,24 @@ public class SongsController {
       }
 
       return new ResponseEntity<>(songsList, HttpStatus.OK);
-    }
+    }*/
 
-    @PostMapping(consumes = "application/json")
+  @PostMapping(consumes = "application/json")
+  public ResponseEntity postSong(@RequestBody String jsonBody) {
+    Gson gson = new GsonBuilder().serializeNulls().create();
+    try {
+      Songs song = gson.fromJson(jsonBody, Songs.class);
+      int id = songsService.postSong(song);
+      HttpHeaders headers = new HttpHeaders();
+      headers.set("Location", "http://localhost:8080/rest/songs/"+String.valueOf(id));
+      return new ResponseEntity(headers, HttpStatus.CREATED);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity((HttpStatus.BAD_REQUEST));
+    }
+  }
+
+    /*@PostMapping(consumes = "application/json")
      public ResponseEntity postSong(@RequestBody String jsonBody) {
       Gson gson = new GsonBuilder().serializeNulls().create();
       try {
@@ -68,7 +113,8 @@ public class SongsController {
         e.printStackTrace();
         return new ResponseEntity((HttpStatus.BAD_REQUEST));
       }
-    }
+    }*/
+
 
 
     @PutMapping(value="/{id}", consumes ="application/json")
