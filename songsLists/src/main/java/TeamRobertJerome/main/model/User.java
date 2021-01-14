@@ -5,8 +5,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "songuser")
+@Table(name="songuser")
 public class User {
+
   @Id
   private String userId;
 
@@ -15,9 +16,21 @@ public class User {
   private String lastName;
   private String token;
 
-  public User (String firstName, String lastName){
-    this.firstName = firstName;
-    this.lastName = lastName;
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  @Id
+  public String getUserId() {
+    return userId;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getFirstName() {
@@ -34,22 +47,6 @@ public class User {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
-  }
-
-  public String getUserId() {
-    return userId;
-    }
-
-  public void setUserId(String userId) {
-    this.userId = userId;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getPassword() {
-    return password;
   }
 
   public String getToken() {

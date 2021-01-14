@@ -1,8 +1,7 @@
 package TeamRobertJerome.main.controller;
 
 import TeamRobertJerome.main.model.User;
-import TeamRobertJerome.main.services.IUserDAO;
-import TeamRobertJerome.main.services.UserDAO;
+import TeamRobertJerome.main.services.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -19,18 +18,11 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value="/auth")
+@RequestMapping(value="/rest/auth")
 public class UserController {
 
-  IUserDAO userDAOImpl = new UserDAO();
-
-  /*
   @Autowired
-  public UserController(IUserDAO userDAO){ userDAOImpl = userDAO; }
-*/
-  public  IUserDAO getUserDAOImpl(){
-    return userDAOImpl;
-  }
+  IUserService userService;
 
   @PostMapping(produces = "text/plain", consumes ="application/json")
   public ResponseEntity<String> authorize(@RequestBody String jsonBody)
@@ -39,7 +31,7 @@ public class UserController {
       Gson gson = new GsonBuilder().serializeNulls().create();
       User reqUser = gson.fromJson(jsonBody, User.class);
       String password = reqUser.getPassword();
-      User user = userDAOImpl.getUserByUserId(reqUser.getUserId());
+      User user = userService.getUserByUserId(reqUser.getUserId());
       if (user.getPassword().equals(password)) {
         UUID uuid = UUID.randomUUID();
         user.setToken(uuid.toString());
