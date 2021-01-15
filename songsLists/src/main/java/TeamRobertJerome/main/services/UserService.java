@@ -39,8 +39,10 @@ public class UserService implements IUserService {
   public boolean isTokenValid(String token){
     ArrayList<User> userList = (ArrayList<User>) repository.findAll();
     for (User u: userList){
-      if(u.getToken().equals(token)){
-        return true;
+      if(u.getToken()!=null) {
+        if (u.getToken().equals(token)) {
+          return true;
+        }
       }
     }
     return false;
