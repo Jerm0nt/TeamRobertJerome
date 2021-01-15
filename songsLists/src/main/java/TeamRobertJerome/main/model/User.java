@@ -1,8 +1,7 @@
 package TeamRobertJerome.main.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="songuser")
@@ -10,6 +9,9 @@ public class User {
 
   @Id
   private String userId;
+
+  @OneToMany(mappedBy="songList")
+  Set<SongList> songListSet;
 
   private String password;
   private String firstName;
