@@ -34,7 +34,7 @@ public class UserController {
       User user = userService.getUserByUserId(reqUser.getUserId());
       if (user.getPassword().equals(password)) {
         UUID uuid = UUID.randomUUID();
-        user.setToken(uuid.toString());
+        userService.setToken(user, uuid.toString());
         return new ResponseEntity<String> (uuid.toString(), HttpStatus.OK);
       }else{
         return new ResponseEntity<String> ("Declined!!", HttpStatus.UNAUTHORIZED);

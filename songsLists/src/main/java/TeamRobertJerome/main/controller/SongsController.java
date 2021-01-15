@@ -2,6 +2,7 @@ package TeamRobertJerome.main.controller;
 
 import TeamRobertJerome.main.model.Songs;
 import TeamRobertJerome.main.services.ISongsService;
+import TeamRobertJerome.main.services.IUserService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -16,14 +17,21 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(value="/rest/songs")
+@RequestMapping(value="songsWS-TeamRobertJerome/rest/songs")
 public class SongsController {
 
   @Autowired
   private ISongsService songsService;
 
+  @Autowired
+  private IUserService userService;
+
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
-    public ResponseEntity<Songs> getSong(@PathVariable(value="id") Integer id) {
+    public ResponseEntity<Songs> getSong(@PathVariable(value="id") Integer id,
+                                         @RequestHeader("Authorization") String token) {
+      if(!userService.isTokenValid(token)){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
       Songs song;
       try{
         song = songsService.getSong(id);
@@ -35,8 +43,12 @@ public class SongsController {
     }
 
     @GetMapping(produces = {"application/json", "application/xml"})
-    public ResponseEntity<ArrayList<Songs>> allSongs(){
+    public ResponseEntity<ArrayList<Songs>> allSongs(
+      @RequestHeader("Authorization") String token) {
 
+      if(!userService.isTokenValid(token)){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
       ArrayList songsList;
       try {
         songsList = songsService.findAll();
@@ -48,7 +60,11 @@ public class SongsController {
     }
 
   @PostMapping(consumes = "application/json")
-  public ResponseEntity postSong(@RequestBody String jsonBody) {
+  public ResponseEntity postSong(@RequestBody String jsonBody,
+                                 @RequestHeader("Authorization") String token) {
+    if(!userService.isTokenValid(token)){
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
     Gson gson = new GsonBuilder().serializeNulls().create();
     try {
       Songs song = gson.fromJson(jsonBody, Songs.class);
@@ -63,7 +79,11 @@ public class SongsController {
   }
 
     @PutMapping(value="/{id}", consumes ="application/json")
-    public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id) {
+    public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id,
+                                  @RequestHeader("Authorization") String token) {
+      if(!userService.isTokenValid(token)){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
       try {
         Gson gson = new GsonBuilder().serializeNulls().create();
         Songs song = gson.fromJson(jsonBody, Songs.class);
@@ -82,7 +102,11 @@ public class SongsController {
     }
 
     @DeleteMapping(value="/{id}")
-    public ResponseEntity deleteSong(@PathVariable (value="id") Integer id) {
+    public ResponseEntity deleteSong(@PathVariable (value="id") Integer id,
+                                     @RequestHeader("Authorization") String token) {
+      if(!userService.isTokenValid(token)){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
       try {
         songsService.deleteSong(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

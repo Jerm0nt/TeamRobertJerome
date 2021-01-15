@@ -6,6 +6,8 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserService implements IUserService {
 
@@ -22,5 +24,26 @@ public class UserService implements IUserService {
     }
   }
 
+  @Override
+  public void setToken(User user, String token) throws NotFoundException {
+    try{
+      User oldUser = repository.findById(user.getUserId()).get();
+      oldUser.setToken(token);
+      repository.save(oldUser);
+    }catch (Exception e){
+      throw new NotFoundException("Kein solcher User!");
+    }
+  }
+
+  @Override
+  public boolean isTokenValid(String token){
+    ArrayList<User> userList = (ArrayList<User>) repository.findAll();
+    for (User u: userList){
+      if(u.getToken().equals(token)){
+        return true;
+      }
+    }
+    return false;
+  }
 
 }
