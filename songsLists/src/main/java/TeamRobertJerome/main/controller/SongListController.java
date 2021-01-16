@@ -22,6 +22,27 @@ public class SongListController {
   @Autowired
   IUserService userService;
 
+  @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
+  public ResponseEntity getSongList(@PathVariable(value="id") Integer id,
+                                    @RequestHeader(name = "Authorization", required = false) String token) {
+    if(!userService.isTokenValid(token) || token==null){
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    SongList songList;
+    try{
+      songList = songListService.getSongList(id);
+    }catch (Exception e){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    try{
+      if(!songList.getOwner().getUserId().equals(userService.getUserByToken(token).getUserId())){
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
+      }
+    }catch(Exception e){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(songList, HttpStatus.OK);
+  }
   @PostMapping(consumes = "application/json")
   public ResponseEntity postSongList(@RequestBody String jsonBody,
                                      @RequestHeader(name="Authorization", required = false) String token){
