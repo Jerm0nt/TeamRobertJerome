@@ -54,7 +54,7 @@ public class SongListController {
       SongList songList = gson.fromJson(jsonBody, SongList.class);
       Gson gsonTest = new Gson();
       String testString = gsonTest.toJson(songList);
-      System.out.println();
+      System.out.println(testString);
       int id = songListService.postSongList(songList, token);
       HttpHeaders headers = new HttpHeaders();
       headers.set("Location", "http://localhost:8080/songsWS-TeamRobertJerome/rest/songLists/"+String.valueOf(id));
