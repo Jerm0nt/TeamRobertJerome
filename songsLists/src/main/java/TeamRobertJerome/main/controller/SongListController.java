@@ -43,21 +43,18 @@ public class SongListController {
     return new ResponseEntity<>(songList, HttpStatus.OK);
   }
   @PostMapping(consumes = "application/json")
-  public ResponseEntity postSongList(@RequestBody String jsonBody,
+  public ResponseEntity<SongList> postSongList(@RequestBody SongList songList,
                                      @RequestHeader(name="Authorization", required = false) String token){
     if(!userService.isTokenValid(token)|| token==null){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-    Gson gson = new GsonBuilder().serializeNulls().create();
     try{
-      SongList songList = gson.fromJson(jsonBody, SongList.class);
-      Gson gsonTest = new Gson();
-      String testString = gsonTest.toJson(songList);
-      System.out.println(testString);
+
+
       int id = songListService.postSongList(songList, token);
       HttpHeaders headers = new HttpHeaders();
       headers.set("Location", "http://localhost:8080/songsWS-TeamRobertJerome/rest/songLists/"+String.valueOf(id));
-      return new ResponseEntity(headers, HttpStatus.CREATED);
+      return new ResponseEntity<>(songList,headers, HttpStatus.CREATED);
     }catch (Exception e){
       e.printStackTrace();
       return new ResponseEntity(HttpStatus.BAD_REQUEST);

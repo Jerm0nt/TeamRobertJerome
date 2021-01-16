@@ -1,6 +1,7 @@
 package TeamRobertJerome.main.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,8 +19,7 @@ public class SongList {
   boolean isPrivate;
 
   @ManyToMany
-  @JoinTable(name="songs_song_list")
-  Set<Songs> songs;
+  List<Songs> songs;
 
   public int getId() {
     return id;
@@ -53,11 +53,11 @@ public class SongList {
     this.isPrivate = isPublic;
   }
 
-  public Set<Songs> getSongs() {
+  public List<Songs> getSongs() {
     return songs;
   }
 
-  public void setSongs(Set<Songs> songList) {
+  public void setSongs(List<Songs> songList) {
     this.songs = songList;
   }
 }
