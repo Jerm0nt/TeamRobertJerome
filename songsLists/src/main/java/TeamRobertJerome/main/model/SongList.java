@@ -19,7 +19,7 @@ public class SongList {
 
   @ManyToMany
   @JoinTable(name="songs_song_list")
-  private Set<Songs> songs;
+  Set<Songs> songs;
 
   public int getId() {
     return id;
