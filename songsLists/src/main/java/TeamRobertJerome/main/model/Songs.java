@@ -1,7 +1,6 @@
 package TeamRobertJerome.main.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 public class Songs {
@@ -19,11 +18,6 @@ public class Songs {
   private int released;
 
   public Songs(){}
-
-  public Songs( int id, String title){
-    this.id  = id;
-    this.title = title;
-  }
 
   public int getId(){
     return id;
