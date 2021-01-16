@@ -17,9 +17,19 @@ public class SongListService implements ISongListService {
 
   @Override
   public int postSongList(SongList songList, String token) throws NotFoundException {
-    User owner = userService.getUserByUserToken(token);
+    User owner = userService.getUserByToken(token);
     songList.setOwner(owner);
     repository.save(songList);
-    return songList.getSongListId();
+    return songList.getId();
+  }
+
+  @Override
+  public SongList getSongList(Integer id) throws NotFoundException {
+    try{
+      SongList songList = repository.findById(id).get();
+      return songList;
+    }catch(Exception e){
+      throw new NotFoundException("songList nicht gefunden");
+    }
   }
 }

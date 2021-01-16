@@ -8,7 +8,7 @@ import java.util.Set;
 public class SongList {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int songListId;
+  private int id;
 
   @ManyToOne
   @JoinColumn(name = "owner_id")
@@ -16,15 +16,17 @@ public class SongList {
 
   private String name;
   boolean isPrivate;
+
   @ManyToMany
+  @JoinTable(name="songs_song_list")
   private Set<Songs> songs;
 
-  public int getSongListId() {
-    return songListId;
+  public int getId() {
+    return id;
   }
 
-  public void setSongListId(int id) {
-    this.songListId = id;
+  public void setId(int id) {
+    this.id = id;
   }
 
   public User getOwner() {

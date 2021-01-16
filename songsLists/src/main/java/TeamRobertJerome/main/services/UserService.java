@@ -49,7 +49,7 @@ public class UserService implements IUserService {
   }
 
   @Override
-  public User getUserByUserToken(String token) throws NotFoundException {
+  public User getUserByToken(String token) throws NotFoundException {
     ArrayList<User> userList = (ArrayList<User>) repository.findAll();
     for (User u: userList){
       if(u.getToken()!=null) {

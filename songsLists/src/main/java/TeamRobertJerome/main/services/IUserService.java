@@ -10,5 +10,5 @@ public interface IUserService {
 
   boolean isTokenValid(String token);
 
-    User getUserByUserToken(String token) throws NotFoundException;
+    User getUserByToken(String token) throws NotFoundException;
 }

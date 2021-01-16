@@ -57,7 +57,6 @@ public class SongsController {
       } catch (Exception e) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
-
       return new ResponseEntity<>(songsList, HttpStatus.OK);
     }
 
