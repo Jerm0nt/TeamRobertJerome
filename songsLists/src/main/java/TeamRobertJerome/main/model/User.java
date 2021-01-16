@@ -10,7 +10,8 @@ public class User {
   @Id
   private String userId;
 
-  @OneToMany(mappedBy="songList")
+  @OneToMany(mappedBy="owner", cascade = CascadeType.ALL,
+    orphanRemoval = true)
   Set<SongList> songListSet;
 
   private String password;

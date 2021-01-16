@@ -47,4 +47,17 @@ public class UserService implements IUserService {
     }
     return false;
   }
+
+  @Override
+  public User getUserByUserToken(String token) throws NotFoundException {
+    ArrayList<User> userList = (ArrayList<User>) repository.findAll();
+    for (User u: userList){
+      if(u.getToken()!=null) {
+        if (u.getToken().equals(token)) {
+          return u;
+        }
+      }
+    }
+    throw new NotFoundException("Nutzer mit diesem token existiert nicht/konnte nicht gefunden werden!");
+  }
 }

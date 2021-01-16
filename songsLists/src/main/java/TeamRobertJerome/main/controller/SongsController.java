@@ -28,8 +28,8 @@ public class SongsController {
 
     @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ResponseEntity<Songs> getSong(@PathVariable(value="id") Integer id,
-                                         @RequestHeader("Authorization") String token) {
-      if(!userService.isTokenValid(token)){
+                                         @RequestHeader(name = "Authorization", required = false) String token) {
+      if(!userService.isTokenValid(token) || token==null){
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
       Songs song;
@@ -44,8 +44,10 @@ public class SongsController {
 
     @GetMapping(produces = {"application/json", "application/xml"})
     public ResponseEntity<ArrayList<Songs>> allSongs(
-      @RequestHeader("Authorization") String token) {
-
+      @RequestHeader(name = "Authorization", required = false) String token) {
+      if(token==null){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
       if(!userService.isTokenValid(token)){
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
@@ -61,8 +63,8 @@ public class SongsController {
 
   @PostMapping(consumes = "application/json")
   public ResponseEntity postSong(@RequestBody String jsonBody,
-                                 @RequestHeader("Authorization") String token) {
-    if(!userService.isTokenValid(token)){
+                                 @RequestHeader(name = "Authorization", required = false) String token) {
+    if(!userService.isTokenValid(token)|| token==null){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     Gson gson = new GsonBuilder().serializeNulls().create();
@@ -70,7 +72,7 @@ public class SongsController {
       Songs song = gson.fromJson(jsonBody, Songs.class);
       int id = songsService.postSong(song);
       HttpHeaders headers = new HttpHeaders();
-      headers.set("Location", "http://localhost:8080/rest/songs/"+String.valueOf(id));
+      headers.set("Location", "http://localhost:8080/songsWS-TeamRobertJerome/rest/songs/"+String.valueOf(id));
       return new ResponseEntity(headers, HttpStatus.CREATED);
     } catch (Exception e) {
       e.printStackTrace();
@@ -80,8 +82,8 @@ public class SongsController {
 
     @PutMapping(value="/{id}", consumes ="application/json")
     public ResponseEntity putSong(@RequestBody String jsonBody, @PathVariable (value = "id") Integer id,
-                                  @RequestHeader("Authorization") String token) {
-      if(!userService.isTokenValid(token)){
+                                  @RequestHeader(name = "Authorization", required = false) String token) {
+      if(!userService.isTokenValid(token)|| token==null){
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
       try {
@@ -103,8 +105,9 @@ public class SongsController {
 
     @DeleteMapping(value="/{id}")
     public ResponseEntity deleteSong(@PathVariable (value="id") Integer id,
-                                     @RequestHeader("Authorization") String token) {
-      if(!userService.isTokenValid(token)){
+                                     @RequestHeader(name = "Authorization", required = false) String token) {
+
+      if(!userService.isTokenValid(token)|| token==null){
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
       try {

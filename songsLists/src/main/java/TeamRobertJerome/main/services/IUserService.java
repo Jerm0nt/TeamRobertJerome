@@ -9,4 +9,6 @@ public interface IUserService {
   void setToken(User user, String token) throws NotFoundException;
 
   boolean isTokenValid(String token);
+
+    User getUserByUserToken(String token) throws NotFoundException;
 }
