@@ -6,9 +6,9 @@ import javassist.NotFoundException;
 import java.util.ArrayList;
 
 public interface ISongsService {
-  ArrayList<Songs> findAll();
+  ArrayList<Songs> findAll() throws NotFoundException;
 
-  Songs getSong(Integer id);
+  Songs getSong(Integer id) throws NotFoundException;
 
   int postSong(Songs song) throws Exception;
 

@@ -117,5 +117,10 @@ public class SongsController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
       }
     }
+
+  public void setServices(ISongsService mockSongsServie, IUserService mockUserService) {
+      this.userService = mockUserService;
+      this.songsService = mockSongsServie;
+  }
 }
 

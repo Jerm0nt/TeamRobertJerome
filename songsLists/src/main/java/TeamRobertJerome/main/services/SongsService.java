@@ -16,15 +16,17 @@ public class SongsService implements ISongsService {
   private SongsRepository repository;
 
   @Override
-  public ArrayList<Songs> findAll() {
-    return (ArrayList<Songs>) repository.findAll();
+  public ArrayList<Songs> findAll() throws NotFoundException {
+
+    try{return (ArrayList<Songs>) repository.findAll();}
+    catch(Exception e){throw new NotFoundException("Keine songs");}
   }
 
   @Override
-  public Songs getSong(Integer id) {
-    return repository.findById(id).get();
+  public Songs getSong(Integer id) throws NotFoundException {
+    try { return repository.findById(id).get(); }
+    catch (Exception e) { throw new NotFoundException("Kein Song mit dieser id"); }
   }
-
   @Override
   public int postSong(Songs song) throws Exception {
     try{
