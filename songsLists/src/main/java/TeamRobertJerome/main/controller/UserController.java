@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value="songsWS-TeamRobertJerome/rest/auth")
+@RequestMapping(value="/auth")
 public class UserController {
 
   @Autowired

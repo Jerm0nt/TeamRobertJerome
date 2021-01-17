@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(value="songsWS-TeamRobertJerome/rest/songList")
+@RequestMapping(value="/songList")
 public class SongListController {
   @Autowired
   ISongListService songListService;

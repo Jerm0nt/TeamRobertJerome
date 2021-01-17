@@ -17,7 +17,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(value="songsWS-TeamRobertJerome/rest/songs")
+@RequestMapping(value="/songs")
 public class SongsController {
 
   @Autowired
