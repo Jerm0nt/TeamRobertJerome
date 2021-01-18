@@ -1,26 +1,36 @@
 package TeamRobertJerome.main.services;
 
 import TeamRobertJerome.main.model.SongList;
+import TeamRobertJerome.main.model.Songs;
 import TeamRobertJerome.main.model.User;
 import TeamRobertJerome.main.repository.SongListRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SongListService implements ISongListService {
   @Autowired
   IUserService userService;
+  @Autowired
+  ISongsService songsService;
   @Autowired
   SongListRepository repository;
 
 
   @Override
   public int postSongList(SongList songList, String token) throws NotFoundException {
-    User owner = userService.getUserByToken(token);
-    songList.setUser(owner);
-    repository.save(songList);
-    return songList.getId();
+    List<Songs> songs = songList.getSongs();
+    if(songsService.areSongsValid(songs)) {
+      User owner = userService.getUserByToken(token);
+      songList.setUser(owner);
+      repository.save(songList);
+      return songList.getId();
+    }else{
+      throw new NotFoundException("Diese Songs sind teilweise nicht in der DB!");
+    }
   }
 
   @Override

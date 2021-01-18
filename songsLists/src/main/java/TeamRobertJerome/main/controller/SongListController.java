@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 
 @RestController
 @RequestMapping(value="/songList")
@@ -60,7 +62,7 @@ public class SongListController {
       return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
   }
-  /*@GetMapping(produces = {"application/json", "application/xml"})
+  @GetMapping(produces = {"application/json", "application/xml"})
   public ResponseEntity getSongListByUser(@RequestParam(value="userId") String userId,
                            @RequestHeader(name = "Authorization", required = false) String token) {
     if(!userService.isTokenValid(token)|| token==null){
@@ -72,5 +74,5 @@ public class SongListController {
     }catch(Exception e){
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
-  }*/
+  }
 }

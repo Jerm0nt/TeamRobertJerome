@@ -4,6 +4,7 @@ import TeamRobertJerome.main.model.Songs;
 import javassist.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ISongsService {
   ArrayList<Songs> findAll() throws NotFoundException;
@@ -15,4 +16,6 @@ public interface ISongsService {
   void putSong(Integer id, Songs song) throws NotFoundException;
 
   void deleteSong(Integer id) throws NotFoundException;
+
+    boolean areSongsValid(List<Songs> songs);
 }

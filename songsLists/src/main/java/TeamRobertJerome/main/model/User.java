@@ -7,18 +7,21 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name="song_user")
 public class User {
 
   @Id
   private String userId;
 
-  @OneToMany(mappedBy = "user",
-    cascade = CascadeType.ALL)
+
   private Set<SongList> songLists = new HashSet<>();
 
+  @OneToMany(mappedBy = "user",
+    cascade = CascadeType.ALL)
   public Set<SongList> getSongLists() {
     return songLists;
   }
+
 
   public void setSongLists(Set<SongList> songLists) {
     this.songLists = songLists;

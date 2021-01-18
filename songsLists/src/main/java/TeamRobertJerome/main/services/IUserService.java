@@ -15,5 +15,5 @@ public interface IUserService {
 
     User getUserByToken(String token) throws NotFoundException;
 
-    //Set<SongList> getSongListSet(String userId, String token) throws NotFoundException;
+    Set<SongList> getSongListSet(String userId, String token) throws NotFoundException;
 }

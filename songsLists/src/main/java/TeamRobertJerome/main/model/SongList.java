@@ -17,6 +17,7 @@ public class SongList {
   private User user;
 
   private String name;
+  @JsonProperty(value="isPrivate")
   boolean isPrivate;
 
   @ManyToMany
@@ -50,8 +51,8 @@ public class SongList {
     return isPrivate;
   }
 
-  public void setPrivate(boolean isPublic) {
-    this.isPrivate = isPublic;
+  public void setPrivate(boolean isPrivate) {
+    this.isPrivate = isPrivate;
   }
 
   public List<Songs> getSongs() {

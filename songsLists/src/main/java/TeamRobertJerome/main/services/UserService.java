@@ -65,14 +65,14 @@ public class UserService implements IUserService {
     }
     throw new NotFoundException("Nutzer mit diesem token existiert nicht/konnte nicht gefunden werden!");
   }
-  /*@Override
+  @Override
   public Set<SongList> getSongListSet(String userId, String token) throws NotFoundException {
     try{
       User user = repository.findById(userId).get();
       if(token.equals(user.getToken())){
-        return user.getSongListSet();
+        return user.getSongLists();
       }else{
-        Set<SongList> songListSet = user.getSongListSet();
+        Set<SongList> songListSet = user.getSongLists();
         Set<SongList> publicSongLists = new HashSet<>();
         for (SongList s : songListSet){
           if(!s.isPrivate()){
@@ -84,6 +84,5 @@ public class UserService implements IUserService {
     }catch (Exception e){
       throw new NotFoundException("User mit Id nicht gefunden");
     }
-
-  }*/
+  }
 }

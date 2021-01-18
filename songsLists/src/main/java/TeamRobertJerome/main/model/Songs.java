@@ -51,4 +51,12 @@ public class Songs {
   public void setReleased(int released){
     this.released=released;
   }
+
+  public boolean equals(Songs comapredSong){
+    return (this.getId()==comapredSong.getId()
+      && this.getTitle().equals(comapredSong.getTitle())
+      && this.getReleased() == comapredSong.getReleased()
+      && this.getArtist().equals(comapredSong.getArtist())
+      && this.getLabel().equals(comapredSong.getLabel()));
+  }
 }

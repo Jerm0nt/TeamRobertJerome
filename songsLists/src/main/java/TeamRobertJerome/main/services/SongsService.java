@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SongsService implements ISongsService {
@@ -66,5 +67,19 @@ public class SongsService implements ISongsService {
       e.printStackTrace();
       throw new NotFoundException("song mit id existiert nicht");
     }
+  }
+
+  @Override
+  public boolean areSongsValid(List<Songs> songs) {
+    for(Songs s : songs){
+      try{
+        if(!s.equals(repository.findById(s.getId()).get())){
+          return false;
+        }
+      }catch(Exception e){
+        return false;
+      }
+    }
+    return true;
   }
 }
