@@ -1,10 +1,9 @@
 package TeamRobertJerome.main.controller;
 
 import TeamRobertJerome.main.model.SongList;
+import TeamRobertJerome.main.model.User;
 import TeamRobertJerome.main.services.ISongListService;
 import TeamRobertJerome.main.services.IUserService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,8 +21,8 @@ public class SongListController {
   IUserService userService;
 
   @GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
-  public ResponseEntity getSongList(@PathVariable(value="id") Integer id,
-                                    @RequestHeader(name = "Authorization", required = false) String token) {
+  public ResponseEntity getSongListById(@PathVariable(value="id") Integer id,
+                                        @RequestHeader(name = "Authorization", required = false) String token) {
     if(!userService.isTokenValid(token) || token==null){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
@@ -34,7 +33,10 @@ public class SongListController {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     try{
-      if(!songList.getOwner().getUserId().equals(userService.getUserByToken(token).getUserId())){
+      //wenn SongList privat, muss token zu SongList-Owner gehören
+      User u = songList.getUser();
+      if(songList.isPrivate() &&
+        !songList.getUser().getUserId().equals(userService.getUserByToken(token).getUserId())){
         return new ResponseEntity(HttpStatus.FORBIDDEN);
       }
     }catch(Exception e){
@@ -49,8 +51,6 @@ public class SongListController {
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     try{
-
-
       int id = songListService.postSongList(songList, token);
       HttpHeaders headers = new HttpHeaders();
       headers.set("Location", "http://localhost:8080/songsWS-TeamRobertJerome/rest/songLists/"+String.valueOf(id));
@@ -60,4 +60,17 @@ public class SongListController {
       return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
   }
+  /*@GetMapping(produces = {"application/json", "application/xml"})
+  public ResponseEntity getSongListByUser(@RequestParam(value="userId") String userId,
+                           @RequestHeader(name = "Authorization", required = false) String token) {
+    if(!userService.isTokenValid(token)|| token==null){
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    try{
+      Set<SongList> songListSet = userService.getSongListSet(userId, token);
+      return new ResponseEntity(songListSet, HttpStatus.OK);
+    }catch(Exception e){
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+  }*/
 }

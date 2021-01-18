@@ -1,18 +1,20 @@
 package TeamRobertJerome.main.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
 public class SongList {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @ManyToOne
-  @JoinColumn(name = "owner_id")
-  private User owner;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "user_id")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private User user;
 
   private String name;
   boolean isPrivate;
@@ -28,12 +30,12 @@ public class SongList {
     this.id = id;
   }
 
-  public User getOwner() {
-    return owner;
+  public User getUser() {
+    return user;
   }
 
-  public void setOwner(User owner) {
-    this.owner = owner;
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public String getName() {

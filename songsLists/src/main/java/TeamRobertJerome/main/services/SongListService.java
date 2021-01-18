@@ -18,7 +18,7 @@ public class SongListService implements ISongListService {
   @Override
   public int postSongList(SongList songList, String token) throws NotFoundException {
     User owner = userService.getUserByToken(token);
-    songList.setOwner(owner);
+    songList.setUser(owner);
     repository.save(songList);
     return songList.getId();
   }

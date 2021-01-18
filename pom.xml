@@ -79,7 +79,7 @@
         </dependency>
 
 
-        <dependency>
+        <!--<dependency>
 
         <groupId>org.hibernate</groupId>
 
@@ -87,7 +87,7 @@
 
         <version>5.4.15.Final</version>
 
-    </dependency>
+    </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -100,7 +100,7 @@
 
 
 
-        <dependency>
+        <!--<dependency>
 
         <groupId>org.hibernate</groupId>
 
@@ -108,7 +108,7 @@
 
         <version>5.4.15.Final</version>
 
-    </dependency>
+    </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

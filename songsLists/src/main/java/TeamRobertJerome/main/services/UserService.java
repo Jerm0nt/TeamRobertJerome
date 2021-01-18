@@ -1,12 +1,17 @@
 package TeamRobertJerome.main.services;
 
+import TeamRobertJerome.main.model.SongList;
 import TeamRobertJerome.main.model.User;
 import TeamRobertJerome.main.repository.UserRepository;
 import javassist.NotFoundException;
+import org.apache.commons.collections.set.AbstractSetDecorator;
+import org.apache.commons.collections.set.SynchronizedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class UserService implements IUserService {
@@ -60,4 +65,25 @@ public class UserService implements IUserService {
     }
     throw new NotFoundException("Nutzer mit diesem token existiert nicht/konnte nicht gefunden werden!");
   }
+  /*@Override
+  public Set<SongList> getSongListSet(String userId, String token) throws NotFoundException {
+    try{
+      User user = repository.findById(userId).get();
+      if(token.equals(user.getToken())){
+        return user.getSongListSet();
+      }else{
+        Set<SongList> songListSet = user.getSongListSet();
+        Set<SongList> publicSongLists = new HashSet<>();
+        for (SongList s : songListSet){
+          if(!s.isPrivate()){
+            publicSongLists.add(s);
+          }
+        }
+        return publicSongLists;
+      }
+    }catch (Exception e){
+      throw new NotFoundException("User mit Id nicht gefunden");
+    }
+
+  }*/
 }

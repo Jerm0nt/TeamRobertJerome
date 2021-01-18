@@ -1,18 +1,32 @@
 package TeamRobertJerome.main.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="songuser")
 public class User {
 
   @Id
   private String userId;
 
-  @OneToMany(mappedBy="owner", cascade = CascadeType.ALL,
-    orphanRemoval = true)
-  Set<SongList> songListSet;
+  @OneToMany(mappedBy = "user",
+    cascade = CascadeType.ALL)
+  private Set<SongList> songLists = new HashSet<>();
+
+  public Set<SongList> getSongLists() {
+    return songLists;
+  }
+
+  public void setSongLists(Set<SongList> songLists) {
+    this.songLists = songLists;
+
+    for(SongList s : songLists){
+      s.setUser(this);
+    }
+  }
 
   private String password;
   private String firstName;
