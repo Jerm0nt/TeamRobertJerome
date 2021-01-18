@@ -178,11 +178,13 @@
               </execution>
             </executions>
             <configuration>
-              <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+              <failOnNoGitDirectory>false</failOnNoGitDirectory>
+              <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+              <dotGitDirectory>${project.basedir}/songsLists/src/main/java/TeamRobertJerome/main/.git</dotGitDirectory>
               <prefix>git</prefix>
               <verbose>false</verbose>
               <generateGitPropertiesFile>true</generateGitPropertiesFile>
-              <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+              <generateGitPropertiesFilename>${project.build.outputDirectory}/songsLists/src/main/java/TeamRobertJerome/main/git.properties</generateGitPropertiesFilename>
               <format>json</format>
               <gitDescribe>
                 <skip>false</skip>

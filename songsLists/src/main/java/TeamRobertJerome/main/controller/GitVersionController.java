@@ -1,4 +1,4 @@
-package TeamRobertJerome.controller;
+package TeamRobertJerome.main.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
