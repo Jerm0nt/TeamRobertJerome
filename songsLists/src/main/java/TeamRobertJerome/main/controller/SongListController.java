@@ -4,6 +4,7 @@ import TeamRobertJerome.main.model.SongList;
 import TeamRobertJerome.main.model.User;
 import TeamRobertJerome.main.services.ISongListService;
 import TeamRobertJerome.main.services.IUserService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,22 @@ public class SongListController {
       Set<SongList> songListSet = userService.getSongListSet(userId, token);
       return new ResponseEntity(songListSet, HttpStatus.OK);
     }catch(Exception e){
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+  }
+  @DeleteMapping(value="/{id}")
+  public ResponseEntity deleteSongList(@PathVariable(value="id") Integer id,
+                                       @RequestHeader(name = "Authorization", required = false) String token) {
+    if (!userService.isTokenValid(token) || token == null) {
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    try {
+      if (songListService.deleteSongList(id, token)) {
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+      } else {
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
+      }
+    } catch (NotFoundException e) {
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
   }

@@ -42,4 +42,18 @@ public class SongListService implements ISongListService {
       throw new NotFoundException("songList nicht gefunden");
     }
   }
+
+  @Override
+  public boolean deleteSongList(Integer id, String token) throws NotFoundException {
+    try{
+      if(repository.findById(id).get().getUser().getToken().equals(token)){
+        repository.deleteById(id);
+        return true;
+      }else{
+        return false;
+      }
+    }catch(Exception e){
+      throw new NotFoundException("Songliste nicht gefunden!");
+    }
+  }
 }

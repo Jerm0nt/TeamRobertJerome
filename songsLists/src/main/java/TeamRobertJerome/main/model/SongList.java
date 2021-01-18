@@ -17,6 +17,7 @@ public class SongList {
   private User user;
 
   private String name;
+
   @JsonProperty(value="isPrivate")
   boolean isPrivate;
 
