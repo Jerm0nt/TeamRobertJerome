@@ -26,19 +26,27 @@ public class Songs {
   public String getTitle(){
     return title;
   }
-  public void setTitle(String title){
-    this.title=title;
+  public void setTitle(String title){ this.title=title;
   }
 
   public String getArtist(){
-    return artist;
+
+    if(this.artist!=null){
+      return artist;
+    }else{
+      return "";
+    }
   }
   public void setArtist(String artist){
     this.artist=artist;
   }
 
   public String getLabel(){
-    return label;
+    if (this.label != null) {
+      return label;
+    }else{
+      return "";
+    }
   }
   public void setLabel(String label){
     this.label=label;
@@ -52,11 +60,11 @@ public class Songs {
     this.released=released;
   }
 
-  public boolean equals(Songs comapredSong){
-    return (this.getId()==comapredSong.getId()
-      && this.getTitle().equals(comapredSong.getTitle())
-      && this.getReleased() == comapredSong.getReleased()
-      && this.getArtist().equals(comapredSong.getArtist())
-      && this.getLabel().equals(comapredSong.getLabel()));
+  public boolean equals(Songs comparedSong){
+    return (this.getId()==comparedSong.getId()
+      && this.getTitle().equals(comparedSong.getTitle())
+      && this.getReleased() == comparedSong.getReleased()
+      && this.getArtist().equals(comparedSong.getArtist())
+      && this.getLabel().equals(comparedSong.getLabel()));
   }
 }
