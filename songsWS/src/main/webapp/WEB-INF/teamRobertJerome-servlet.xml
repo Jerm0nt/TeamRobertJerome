@@ -15,11 +15,11 @@
 
   <context:component-scan base-package="htwb.ai.TeamRobertJerome" />
 
-  <bean id="songDAO" class="htwb.ai.TeamRobertJerome.services.SongsDAO">
+  <bean id="songDAO" class="htwb.ai.TeamRobertJerome.main.services.SongsDAO">
     <property name="PERSISTENCE_UNIT_NAME" value="songdb"/>
   </bean>
 
-  <bean id="userDAO" class="htwb.ai.TeamRobertJerome.services.UserDAO">
+  <bean id="userDAO" class="htwb.ai.TeamRobertJerome.main.services.UserDAO">
     <property name="PERSISTENCE_UNIT_NAME" value="songdb"/>
   </bean>
 
