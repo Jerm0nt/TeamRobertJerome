@@ -4,8 +4,6 @@ import TeamRobertJerome.main.model.SongList;
 import TeamRobertJerome.main.model.User;
 import TeamRobertJerome.main.repository.UserRepository;
 import javassist.NotFoundException;
-import org.apache.commons.collections.set.AbstractSetDecorator;
-import org.apache.commons.collections.set.SynchronizedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

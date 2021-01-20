@@ -22,7 +22,7 @@ public class SongListService implements ISongListService {
 
   @Override
   public int postSongList(SongList songList, String token) throws NotFoundException {
-    List<Songs> songs = songList.getSongs();
+    List<Songs> songs = songList.getSongList();
     if(songsService.areSongsValid(songs)) {
       User owner = userService.getUserByToken(token);
       songList.setUser(owner);

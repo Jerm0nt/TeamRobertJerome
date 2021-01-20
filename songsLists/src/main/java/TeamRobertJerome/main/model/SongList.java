@@ -9,6 +9,7 @@ import java.util.List;
 public class SongList {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id_song_list")
   private int id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -22,7 +23,7 @@ public class SongList {
   boolean isPrivate;
 
   @ManyToMany
-  List<Songs> songs;
+  List<Songs> songList;
 
   public int getId() {
     return id;
@@ -56,11 +57,11 @@ public class SongList {
     this.isPrivate = isPrivate;
   }
 
-  public List<Songs> getSongs() {
-    return songs;
+  public List<Songs> getSongList() {
+    return songList;
   }
 
-  public void setSongs(List<Songs> songList) {
-    this.songs = songList;
+  public void setSongList(List<Songs> songList) {
+    this.songList = songList;
   }
 }
