@@ -10,4 +10,3 @@ public class SongsListApp {
     SpringApplication.run(SongsListApp.class, args);
   }
 }
-hero
