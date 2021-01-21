@@ -6,7 +6,6 @@ import htwb.ai.TeamRobertJerome.main.services.ISongsService;
 import htwb.ai.TeamRobertJerome.main.services.IUserService;
 import htwb.ai.TeamRobertJerome.main.services.SongsService;
 import htwb.ai.TeamRobertJerome.main.services.UserService;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import javassist.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +18,6 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -45,7 +43,6 @@ public class SongsControllerTest {
   String returnStringJSON;
   String getReturnStringXML;
   String testSongListJSON;
-  String testSongListXML;
   //test-object
   Songs testSong;
   List<Songs> testSongList;
@@ -63,7 +60,6 @@ public class SongsControllerTest {
     testLocation = "http://localhost:8080/songsWS-TeamRobertJerome/rest/songs/";
 
     Gson gson = new Gson();
-    XmlMapper xmlMapper = new XmlMapper();
 
     tokenValid = "valid";
     tokenInvalid = "invalid";
@@ -84,7 +80,6 @@ public class SongsControllerTest {
     testSongList.add(testSong);
     testSongList.add(testSong);
     testSongListJSON = gson.toJson(testSongList);
-    testSongListXML = xmlMapper.writeValueAsString(testSongList);
 
     when(mockUserService.isTokenValid(tokenValid)).thenReturn(true);
     when(mockUserService.isTokenValid(tokenInvalid)).thenReturn(false);

@@ -1,7 +1,5 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.hibernate.mapping.Array;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -78,7 +76,7 @@ public class SongsServlet extends HttpServlet {
               resp.setStatus(200);
               resp.setHeader("Content-Type", "application/json");
               // resp.setHeader("X-Content-Type-Options","nosniff");
-              stringBuilder.append(new Gson().toJson(song));
+              //stringBuilder.append(new Gson().toJson(song));
               responseStr = stringBuilder.toString();
             }
           }catch(Exception e){
@@ -117,7 +115,7 @@ public class SongsServlet extends HttpServlet {
               resp.setHeader("Content-Type","application/json");
               ListIterator<Songs> iterator = songs.listIterator();
               while (iterator.hasNext()) {
-                stringBuilder.append(new Gson().toJson(iterator.next()) + System.getProperty("line.separator"));
+                //stringBuilder.append(new Gson().toJson(iterator.next()) + System.getProperty("line.separator"));
               }
               responseStr = stringBuilder.toString();
             }
@@ -143,18 +141,18 @@ public class SongsServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     em = factory.createEntityManager();
 
-    Gson gson = new Gson();
+    //Gson gson = new Gson();
     if(req.getHeader("Content-Type").equals("application/json")){
       String body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
       if(isJSONValid(body)){
         try{
-          Songs song = gson.fromJson(body, Songs.class);
+          //Songs song = gson.fromJson(body, Songs.class);
           em.getTransaction().begin();
-          em.persist(song);
+          //em.persist(song);
           em.getTransaction().commit();
-          int id = song.getId();
+          //int id = song.getId();
           resp.setStatus(201);
-          resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
+          //resp.setHeader("Location", "http://localhost:8080/songsservlet_war/songs?songid="+id);
 
         }catch(Exception e){
           em.getTransaction().rollback();
@@ -172,12 +170,12 @@ public class SongsServlet extends HttpServlet {
   }
 
   private static boolean isJSONValid(String jsonInString) {
-    try {
-      Gson gson = new Gson();
-      gson.fromJson(jsonInString, Object.class);
-      return true;
-    } catch(com.google.gson.JsonSyntaxException ex) {
+    //try {
+      //Gson gson = new Gson();
+      //gson.fromJson(jsonInString, Object.class);
+      //return true;
+    //} //catch(com.google.gson.JsonSyntaxException ex) {
       return false;
-    }
+    //}
   }
 }

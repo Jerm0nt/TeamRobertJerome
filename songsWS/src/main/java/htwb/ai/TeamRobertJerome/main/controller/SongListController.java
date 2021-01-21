@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 @RestController
-@RequestMapping(value="/songList")
+@RequestMapping(value="/songLists")
 public class SongListController {
   @Autowired
   ISongListService songListService;
