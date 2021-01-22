@@ -56,6 +56,19 @@ public class UserIntegrationTest {
     }
 
     @Test
+    void ok200FullEschulerPass1234() throws Exception {
+        String userToLogin = "{\"userId\":\"eschuler\",\"password\":\"pass1234\"}";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(userToLogin))
+                .andExpect(status().isOk());
+
+
+
+    }
+
+    @Test
     void notAuthorzied401MmusterWrongPass() throws Exception {
         String userToLogin = "{\"userId\":\"mmuster\",\"password\":\"wrongPass\"}";
 
