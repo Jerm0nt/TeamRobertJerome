@@ -83,4 +83,17 @@ public class UserService implements IUserService {
       throw new NotFoundException("User mit Id nicht gefunden");
     }
   }
+
+  @Override
+  public void deleteSongListFromUser(User userByToken, SongList songList) {
+    ArrayList<SongList> songLists = new ArrayList<SongList>(userByToken.getSongLists());
+    for(int i=0; i<songLists.size(); i++){
+      if(songList.getId()==songLists.get(i).getId()){
+        songLists.remove(i);
+      }
+    }
+
+    userByToken.setSongLists(new HashSet(songLists));
+    repository.save(userByToken);
+  }
 }

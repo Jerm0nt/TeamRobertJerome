@@ -69,6 +69,9 @@ public class SongsController {
     Gson gson = new GsonBuilder().serializeNulls().create();
     try {
       Songs song = gson.fromJson(jsonBody, Songs.class);
+      if(song.getTitle()==null){
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+      }
       int id = songsService.postSong(song);
       HttpHeaders headers = new HttpHeaders();
       headers.set("Location", "http://localhost:8080/songsWS-TeamRobertJerome/rest/songs/"+String.valueOf(id));

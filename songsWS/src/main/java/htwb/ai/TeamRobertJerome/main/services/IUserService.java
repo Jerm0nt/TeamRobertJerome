@@ -13,7 +13,9 @@ public interface IUserService {
 
   boolean isTokenValid(String token);
 
-    User getUserByToken(String token) throws NotFoundException;
+  User getUserByToken(String token) throws NotFoundException;
 
-    Set<SongList> getSongListSet(String userId, String token) throws NotFoundException;
+  Set<SongList> getSongListSet(String userId, String token) throws NotFoundException;
+
+  void deleteSongListFromUser(User userByToken, SongList songList);
 }
