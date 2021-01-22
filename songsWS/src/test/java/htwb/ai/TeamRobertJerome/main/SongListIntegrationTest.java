@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SongListIntegrationTest {
 
-    @Autowired
+    /*@Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -179,7 +179,7 @@ public class SongListIntegrationTest {
 
 
     }
-
+*/
 
     //... TEST CASES ARE NOT COMPLETE ...//
 
