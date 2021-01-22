@@ -8,6 +8,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +19,20 @@ public class SongListService implements ISongListService {
   ISongsService songsService;
   @Autowired
   SongListRepository repository;
+
+  public void deleteSongFromSongLists(Songs songs) {
+    ArrayList<SongList> songLists = (ArrayList<SongList>) repository.findAll();
+    for (SongList s : songLists){
+      for(int i = 0; i<s.getSongList().size(); i++){
+        Songs so = s.getSongList().get(i);
+        if(songs.getId()==so.getId()){
+          s.getSongList().remove(i);
+        }
+      }
+      repository.save(s);
+    }
+
+  }
 
 
   @Override
@@ -47,7 +62,10 @@ public class SongListService implements ISongListService {
   public boolean deleteSongList(Integer id, String token) throws NotFoundException {
     try{
       if(repository.findById(id).get().getUser().getToken().equals(token)){
-        repository.deleteById(id);
+        userService.deleteSongListFromUser(userService.getUserByToken(token), getSongList(id));
+        //getSongList(id).getSongList().clear();
+        //repository.deleteById(id);
+        repository.delete(getSongList(id));
         return true;
       }else{
         return false;

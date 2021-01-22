@@ -16,6 +16,9 @@ public class SongsService implements ISongsService {
   @Autowired
   private SongsRepository repository;
 
+  @Autowired
+  private SongListService songListService;
+
   @Override
   public ArrayList<Songs> findAll() throws NotFoundException {
 
@@ -62,6 +65,7 @@ public class SongsService implements ISongsService {
   @Override
   public void deleteSong(Integer id) throws NotFoundException {
     try{
+      songListService.deleteSongFromSongLists(repository.findById(id).get());
       repository.deleteById(id);
     }catch(Exception e){
       e.printStackTrace();
